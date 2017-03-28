@@ -5,15 +5,17 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
-        <TextView
+        android:layout_height="150dp"
+        android:layout_margin="8dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Frame_Test"/>
-    </LinearLayout>
+            android:src="@drawable/ic_clear_black_24dp"/>
+    </FrameLayout>
 
 </com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateView>
