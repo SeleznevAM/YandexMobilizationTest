@@ -3,6 +3,7 @@ package com.applications.whazzup.yandextranslator.ui.screens.translate;
 import android.util.Log;
 
 import com.applications.whazzup.yandextranslator.R;
+import com.applications.whazzup.yandextranslator.data.network.res.YandexLangRes;
 import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.di.scopes.TranslateScope;
 import com.applications.whazzup.yandextranslator.flow.AbstractScreen;
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 
 import dagger.Provides;
 import mortar.MortarScope;
+import retrofit2.Call;
 
 @Screen(R.layout.screen_translate)
 public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> {
@@ -50,6 +52,7 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
     public interface Component{
         void inject(TranslateView view);
         void inject(Presenter presenter);
+        RootPresenter getRootPresenter();
 
     }
 
@@ -65,6 +68,10 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
         @Override
         protected void initDagger(MortarScope scope) {
             ((Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
+        }
+
+        public void clickOnLangBtn() {
+            mModel.getAllLang();
         }
     }
 
