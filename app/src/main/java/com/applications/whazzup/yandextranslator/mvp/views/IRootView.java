@@ -10,6 +10,10 @@ public interface IRootView extends IView {
     void showLoad();
     void hideLoad();
 
+    public void setLanTo(String lang);
+
+    public void setLanFrom( String lang);
+
     @Nullable
     IView getCurrentScreen();
 }

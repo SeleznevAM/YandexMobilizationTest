@@ -2,6 +2,7 @@ package com.applications.whazzup.yandextranslator.ui.screens.translate;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.applications.whazzup.yandextranslator.R;
@@ -15,8 +16,10 @@ import butterknife.OnClick;
 
 public class TranslateView extends AbstractView<TranslateScreen.Presenter> implements ITranslateView{
 
-    @BindView(R.id.lang_txt)
-    TextView mLangTxt;
+    /*@BindView(R.id.lang_txt)
+    TextView mLangTxt;*/
+   /* @BindView(R.id.translate_text_et)
+    EditText mtranslateText;*/
 
 
     public TranslateView(Context context, AttributeSet attrs) {
@@ -43,4 +46,5 @@ public class TranslateView extends AbstractView<TranslateScreen.Presenter> imple
     void clickOnLangBtn(){
         mPresenter.clickOnLangBtn();
     }
+
 }

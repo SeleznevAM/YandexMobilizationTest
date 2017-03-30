@@ -1,5 +1,7 @@
 package com.applications.whazzup.yandextranslator.ui.screens.translate;
 
+import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 
 import com.applications.whazzup.yandextranslator.R;
@@ -12,15 +14,19 @@ import com.applications.whazzup.yandextranslator.mvp.models.TranslateModel;
 import com.applications.whazzup.yandextranslator.mvp.presenters.AbstractPresenter;
 import com.applications.whazzup.yandextranslator.mvp.presenters.RootPresenter;
 import com.applications.whazzup.yandextranslator.ui.activities.RootActivity;
+import com.applications.whazzup.yandextranslator.ui.screens.language.LanguageScreen;
 
 import javax.inject.Inject;
 
 import dagger.Provides;
+import flow.Flow;
 import mortar.MortarScope;
 import retrofit2.Call;
 
 @Screen(R.layout.screen_translate)
 public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> {
+
+
     public TranslateScreen() {
         Log.e("Screen", " Create");
     }
@@ -29,6 +35,7 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
     public Object createScreenComponent(RootActivity.RootComponent parentComponent) {
         return DaggerTranslateScreen_Component.builder().rootComponent(parentComponent).module(new Module()).build();
     }
+
 
     // region================DI==============
 
@@ -65,13 +72,20 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
         @Inject
         RootPresenter mRootPresenter;
 
+
+        @Override
+        protected void onLoad(Bundle savedInstanceState) {
+            super.onLoad(savedInstanceState);
+            mModel.getAllLang();
+        }
+
         @Override
         protected void initDagger(MortarScope scope) {
             ((Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
         }
 
         public void clickOnLangBtn() {
-            mModel.getAllLang();
+            Flow.get(getView()).set(new LanguageScreen(0));
         }
     }
 

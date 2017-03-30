@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateView
     xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
@@ -9,11 +8,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/translate_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Русский"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/translate_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Английский"
+            android:textSize="20sp"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_margin="8dp">
         <EditText
+            android:id="@+id/translate_text_et"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
         <ImageButton
@@ -21,6 +33,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_clear_black_24dp"/>
     </FrameLayout>
+
+
 
         <Button
             android:id="@+id/lang_btn"
