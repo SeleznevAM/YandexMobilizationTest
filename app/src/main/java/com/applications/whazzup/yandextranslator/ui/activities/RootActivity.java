@@ -3,14 +3,20 @@ package com.applications.whazzup.yandextranslator.ui.activities;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewManager;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,10 +28,12 @@ import com.applications.whazzup.yandextranslator.di.scopes.RootScope;
 import com.applications.whazzup.yandextranslator.di.scopes.TranslateScope;
 import com.applications.whazzup.yandextranslator.flow.TreeKeyDispatcher;
 import com.applications.whazzup.yandextranslator.mvp.presenters.RootPresenter;
+import com.applications.whazzup.yandextranslator.mvp.views.IActionBarView;
 import com.applications.whazzup.yandextranslator.mvp.views.IRootView;
 import com.applications.whazzup.yandextranslator.mvp.views.IView;
 import com.applications.whazzup.yandextranslator.ui.screens.language.LanguageScreen;
 import com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateScreen;
+import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.DetailScreen;
 
 import javax.inject.Inject;
 
@@ -37,7 +45,7 @@ import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 
 
-public class RootActivity extends AppCompatActivity implements IRootView, BottomNavigationView.OnNavigationItemSelectedListener {
+public class RootActivity extends AppCompatActivity implements IRootView, BottomNavigationView.OnNavigationItemSelectedListener, IActionBarView {
 
 
     private int from = 0;
@@ -58,11 +66,18 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
     @BindView(R.id.translate_to)
     TextView mTranslateTo;
 
+    @BindView(R.id.appbar_layout)
+    AppBarLayout mAppBarLayout;
+
+    @BindView(R.id.direction_wrapper)
+    LinearLayout mDirectionWrapper;
+
     ActionBar mActionBar;
 
 
     @Inject
     RootPresenter mRootPresenter;
+
 
 
 
@@ -99,6 +114,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
     private void initToolBar(){
         setSupportActionBar(mToolBar);
         mActionBar = getSupportActionBar();
+        mActionBar.setTitle("");
     }
 
     @Override
@@ -168,7 +184,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
                 break;
 
             case R.id.navigation_dashboard:
-                key = new LanguageScreen(0);
+                key = new DetailScreen();
                 break;
 
             case R.id.navigation_notifications:
@@ -187,16 +203,58 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
 
     @OnClick(R.id.translate_from)
     void click(){
-        Flow.get(this).set(new LanguageScreen(from));
+        Flow.get(this).set(new LanguageScreen(to));
     }
 
     @OnClick(R.id.translate_to)
         void clickOn(){
-            Flow.get(this).set(new LanguageScreen(to));
+            Flow.get(this).set(new LanguageScreen(from));
+        }
+
+        @OnClick(R.id.change_dir_img)
+            void onClick(){
+             String to = mTranslateTo.getText().toString();
+            String from = mTranslateFrom.getText().toString();
+            mTranslateTo.setText(from);
+            mTranslateFrom.setText(to);
         }
 
 
+    //region===============================IActionBArView==========================
 
+    @Override
+    public void setBackArrow(boolean enable) {
+        if(enable){
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+        }else{
+            mActionBar.setDisplayHomeAsUpEnabled(false);
+        }
+    }
+
+    @Override
+    public void setTabLayout(ViewPager viewPager) {
+        TabLayout tabView = new TabLayout(this);
+        tabView.setupWithViewPager(viewPager);
+        mAppBarLayout.addView(tabView);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabView));
+    }
+
+    @Override
+    public void removeTabLayout() {
+        View tabView = mAppBarLayout.getChildAt(1);
+        if (tabView != null && tabView instanceof TabLayout) {
+            mAppBarLayout.removeView(tabView);
+        }
+    }
+
+    @Override
+    public void directionVisible(boolean isVisible) {
+        if(isVisible){
+            mDirectionWrapper.setVisibility(View.VISIBLE);
+        }else{
+            mDirectionWrapper.setVisibility(View.GONE);
+        }
+    }
 
     // region================DI==============
 

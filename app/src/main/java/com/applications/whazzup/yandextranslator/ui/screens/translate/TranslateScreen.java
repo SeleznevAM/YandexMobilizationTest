@@ -77,6 +77,7 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             mModel.getAllLang();
+            initActionBar();
         }
 
         @Override
@@ -86,6 +87,10 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
 
         public void clickOnLangBtn() {
             Flow.get(getView()).set(new LanguageScreen(0));
+        }
+
+        private void initActionBar(){
+            mRootPresenter.newActionBarBuilder().setDirectionVisible(true).setBackArrow(false).build();
         }
     }
 

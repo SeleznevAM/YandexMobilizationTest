@@ -25,6 +25,8 @@ import mortar.MortarScope;
 public class LanguageScreen extends AbstractScreen<TranslateScreen.Component> implements TreeKey {
 
     RealmManager mRealmManager = new RealmManager();
+
+
     int direction;
 
     public LanguageScreen(int i) {

@@ -8,18 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/translate_from"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Русский"
-            android:textSize="20sp"/>
-        <TextView
-            android:id="@+id/translate_to"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Английский"
-            android:textSize="20sp"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"

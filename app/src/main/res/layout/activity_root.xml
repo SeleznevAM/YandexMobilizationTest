@@ -15,16 +15,41 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
+            <LinearLayout
+                android:id="@+id/direction_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginLeft="?attr/actionBarSize"
+                android:layout_marginRight="?attr/actionBarSize"
+                android:gravity="center_vertical|center_horizontal">
             <TextView
                 android:id="@+id/translate_from"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="English"/>
+                android:text="English"
+                android:gravity="end"
+                android:textSize="16dp"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:id="@+id/change_dir_img"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_loop_black_24dp"/>
+
             <TextView
                 android:id="@+id/translate_to"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="English"/>
+                android:text="English"
+                android:textSize="16dp"
+                android:textStyle="bold"/>
+            </LinearLayout>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

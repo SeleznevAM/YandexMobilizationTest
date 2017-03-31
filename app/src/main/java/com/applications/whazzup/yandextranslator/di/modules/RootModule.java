@@ -8,10 +8,13 @@ import dagger.Provides;
 
 @Module
 public class RootModule {
+
+
+
     @Provides
     @RootScope
     RootPresenter provideRootPresenter(){
-        return new RootPresenter();
+        return RootPresenter.getInstace();
     }
 }
 
