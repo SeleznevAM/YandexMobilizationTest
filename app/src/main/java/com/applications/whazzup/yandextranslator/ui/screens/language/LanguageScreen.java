@@ -14,6 +14,8 @@ import com.applications.whazzup.yandextranslator.mvp.models.LanguageModel;
 import com.applications.whazzup.yandextranslator.mvp.presenters.AbstractPresenter;
 import com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateScreen;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import dagger.Provides;
@@ -83,6 +85,7 @@ public class LanguageScreen extends AbstractScreen<TranslateScreen.Component> im
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             getView().initView();
+
             for(LangRealm  r : mRealmManager.getAllLang()){
                 getView().getAdapter().addItem(r.getLang());
             }

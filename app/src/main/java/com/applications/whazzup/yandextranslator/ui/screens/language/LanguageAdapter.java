@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.applications.whazzup.yandextranslator.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,6 +36,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 
     public void addItem(String language){
         mLanguageList.add(language);
+        Collections.sort(mLanguageList);
         notifyDataSetChanged();
     }
 
