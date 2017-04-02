@@ -5,8 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 
 import com.applications.whazzup.yandextranslator.App;
+import com.applications.whazzup.yandextranslator.mvp.models.RootModel;
 import com.applications.whazzup.yandextranslator.mvp.views.IRootView;
 import com.applications.whazzup.yandextranslator.ui.activities.RootActivity;
+
+import javax.inject.Inject;
 
 import mortar.Presenter;
 import mortar.bundler.BundleService;
@@ -16,6 +19,11 @@ public class RootPresenter extends Presenter<IRootView> {
     private static RootPresenter ourInstance = null;
     private static int DEFAULT_MODE = 0;
     private static int TAB_MODE = 1;
+    private String languageCodeTo = "en";
+    private String languageCodeFrom = "ru";
+
+     @Inject
+        RootModel mRootModel;
 
     public static RootPresenter getInstace(){
         if(ourInstance == null){
@@ -26,6 +34,7 @@ public class RootPresenter extends Presenter<IRootView> {
 
     private RootPresenter() {
         App.getRootActivityComponent().inject(this);
+        mRootModel.getAllLang();
     }
 
     @Nullable
@@ -79,5 +88,19 @@ public class RootPresenter extends Presenter<IRootView> {
         }
     }
 
+    public String getLanguageCodeTo() {
+        return languageCodeTo;
+    }
 
+    public void setLanguageCodeTo(String languageCodeTo) {
+        this.languageCodeTo = languageCodeTo;
+    }
+
+    public String getLanguageCodeFrom() {
+        return languageCodeFrom;
+    }
+
+    public void setLanguageCodeFrom(String languageCodeFrom) {
+        this.languageCodeFrom = languageCodeFrom;
+    }
 }

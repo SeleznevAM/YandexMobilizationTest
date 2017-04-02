@@ -87,7 +87,7 @@ public class LanguageScreen extends AbstractScreen<TranslateScreen.Component> im
             getView().initView();
 
             for(LangRealm  r : mRealmManager.getAllLang()){
-                getView().getAdapter().addItem(r.getLang());
+                getView().getAdapter().addItem(r);
             }
 
         }
@@ -97,12 +97,14 @@ public class LanguageScreen extends AbstractScreen<TranslateScreen.Component> im
             ((LanguageScreen.Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
         }
 
-        public void selectLang(String langFromPosition) {
+        public void selectLang(LangRealm language) {
             if(direction==1){
-               getRootView().setLanFrom(langFromPosition);
+               getRootView().setLanFrom(language);
+                mRootPresenter.setLanguageCodeFrom(language.getId());
                 Flow.get(getView()).goBack();
             }else if(direction==0){
-               getRootView().setLanTo(langFromPosition);
+               getRootView().setLanTo(language);
+                mRootPresenter.setLanguageCodeTo(language.getId());
                 Flow.get(getView()).goBack();
             }
         }

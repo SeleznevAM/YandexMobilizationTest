@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.applications.whazzup.yandextranslator.R;
+import com.applications.whazzup.yandextranslator.data.storage.realm.LangRealm;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,28 +20,25 @@ import butterknife.ButterKnife;
 
 public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHolder> {
 
-    private List<String> mLanguageList = new ArrayList<>();
+    private List<LangRealm> mLanguageList = new ArrayList<>();
     private CustomClickListener mClickListener;
 
-    public LanguageAdapter() {
-
-    }
 
     public LanguageAdapter(CustomClickListener clickListener) {
         mClickListener = clickListener;
     }
 
-    public LanguageAdapter(List<String> languageList) {
+    public LanguageAdapter(List<LangRealm> languageList) {
         mLanguageList = languageList;
     }
 
-    public void addItem(String language){
+    public void addItem(LangRealm language){
         mLanguageList.add(language);
         Collections.sort(mLanguageList);
         notifyDataSetChanged();
     }
 
-    public String getLangFromPosition(int position){
+    public LangRealm getLangFromPosition(int position){
         return mLanguageList.get(position);
     }
 
@@ -52,8 +50,8 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String s = mLanguageList.get(position);
-        holder.mLanguage.setText(s);
+       LangRealm language = mLanguageList.get(position);
+        holder.mLanguage.setText(language.getLang());
 
     }
 

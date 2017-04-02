@@ -2,6 +2,8 @@ package com.applications.whazzup.yandextranslator;
 
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.di.components.AppComponent;
@@ -16,6 +18,7 @@ import com.facebook.stetho.Stetho;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 import okhttp3.internal.http.RealInterceptorChain;
@@ -23,6 +26,7 @@ import okhttp3.internal.http.RealInterceptorChain;
 public class App extends Application {
 
     private static AppComponent sAppComponent;
+    public static SharedPreferences sSharedPreferences;
     private static RootActivity.RootComponent rootActivityComponent;
     private MortarScope mRootScope;
     private MortarScope mRootActivityScope;
@@ -42,6 +46,8 @@ public class App extends Application {
         .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build()).build());
         createDaggerAppComponent();
         createRootActivityComponent();
+
+        sSharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
 
         mRootScope = MortarScope.buildRootScope()
                 .withService(DaggerService.SERVICE_NAME, sAppComponent)
@@ -74,5 +80,9 @@ public class App extends Application {
 
     public static RootActivity.RootComponent getRootActivityComponent() {
         return rootActivityComponent;
+    }
+
+    public static SharedPreferences getSharedPreferences() {
+        return sSharedPreferences;
     }
 }

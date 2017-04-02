@@ -16,10 +16,10 @@ import butterknife.OnClick;
 
 public class TranslateView extends AbstractView<TranslateScreen.Presenter> implements ITranslateView{
 
-    /*@BindView(R.id.lang_txt)
-    TextView mLangTxt;*/
-   /* @BindView(R.id.translate_text_et)
-    EditText mtranslateText;*/
+    @BindView(R.id.lang_txt)
+    TextView mLangTxt;
+    @BindView(R.id.translate_text_et)
+    EditText mTranslateText;
 
 
     public TranslateView(Context context, AttributeSet attrs) {
@@ -38,7 +38,7 @@ public class TranslateView extends AbstractView<TranslateScreen.Presenter> imple
 
     @Override
     public String getTranslateText() {
-        return null;
+        return mTranslateText.getText().toString();
     }
 
 
@@ -46,5 +46,11 @@ public class TranslateView extends AbstractView<TranslateScreen.Presenter> imple
     void clickOnLangBtn(){
         mPresenter.clickOnLangBtn();
     }
+
+    public void setTranslateTest(String text){
+        mLangTxt.setText(text);
+    }
+
+
 
 }

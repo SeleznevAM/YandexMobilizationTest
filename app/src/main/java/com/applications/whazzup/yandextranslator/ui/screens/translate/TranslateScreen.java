@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.data.network.res.YandexLangRes;
+import com.applications.whazzup.yandextranslator.data.network.res.YandexTranslateRes;
 import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.di.scopes.TranslateScope;
 import com.applications.whazzup.yandextranslator.flow.AbstractScreen;
@@ -22,9 +23,14 @@ import dagger.Provides;
 import flow.Flow;
 import mortar.MortarScope;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 @Screen(R.layout.screen_translate)
 public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> {
+
+
 
 
     public TranslateScreen() {
@@ -76,8 +82,10 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            mModel.getAllLang();
+           // mModel.getAllLang();
+
             initActionBar();
+
         }
 
         @Override
@@ -86,11 +94,26 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
         }
 
         public void clickOnLangBtn() {
-            Flow.get(getView()).set(new LanguageScreen(0));
+            //Flow.get(getView()).set(new LanguageScreen(0));
+            //mRootPresenter.getRootView().showMessage(mRootPresenter.getLanguageCodeFrom() + " - " + mRootPresenter.getLanguageCodeTo());
+           Call<YandexTranslateRes> call = mModel.translateText(getView().getTranslateText(), mRootPresenter.getLanguageCodeFrom() + "-" + mRootPresenter.getLanguageCodeTo());
+            call.enqueue(new Callback<YandexTranslateRes>() {
+                @Override
+                public void onResponse(Call<YandexTranslateRes> call, Response<YandexTranslateRes> response) {
+                    getView().setTranslateTest(response.body().text.toString());
+                }
+
+                @Override
+                public void onFailure(Call<YandexTranslateRes> call, Throwable t) {
+
+                }
+            });
         }
 
         private void initActionBar(){
             mRootPresenter.newActionBarBuilder().setDirectionVisible(true).setBackArrow(false).build();
+            mRootPresenter.getRootView().setLanTo(mModel.getLangByCode(mRootPresenter.getLanguageCodeTo()));
+           mRootPresenter.getRootView().setLanFrom(mModel.getLangByCode(mRootPresenter.getLanguageCodeFrom()));
         }
     }
 

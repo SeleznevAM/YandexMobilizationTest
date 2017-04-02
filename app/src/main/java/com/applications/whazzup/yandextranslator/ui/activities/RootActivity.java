@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.applications.whazzup.yandextranslator.R;
+import com.applications.whazzup.yandextranslator.data.storage.realm.LangRealm;
 import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.di.components.AppComponent;
 import com.applications.whazzup.yandextranslator.di.modules.RootModule;
@@ -48,8 +49,9 @@ import mortar.bundler.BundleServiceRunner;
 public class RootActivity extends AppCompatActivity implements IRootView, BottomNavigationView.OnNavigationItemSelectedListener, IActionBarView {
 
 
-    private int from = 0;
-    private int to = 1;
+    private static final int FROM = 0;
+    private static final int TO = 1;
+
 
     @BindView(R.id.root_frame)
     FrameLayout mRootFrame;
@@ -139,7 +141,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
 
     @Override
     public void showMessage(String message) {
-
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -158,15 +160,17 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
     }
 
     @Override
-    public void setLanTo(String lang) {
-        mTranslateTo.setText(lang);
+    public void setLanTo(LangRealm language) {
+        mTranslateTo.setText(language.getLang());
+        mRootPresenter.setLanguageCodeTo(language.getId());
     }
 
     @Override
-    public void setLanFrom(String lang) {
-        mTranslateFrom.setText(lang);
+    public void setLanFrom(LangRealm language) {
+        mTranslateFrom.setText(language.getLang());
+        mRootPresenter.setLanguageCodeFrom(language.getId());
+        //translateFrom = language.getId();
     }
-
 
 
     @Nullable
@@ -203,20 +207,24 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
 
     @OnClick(R.id.translate_from)
     void click(){
-        Flow.get(this).set(new LanguageScreen(to));
+        Flow.get(this).set(new LanguageScreen(TO));
     }
 
     @OnClick(R.id.translate_to)
         void clickOn(){
-            Flow.get(this).set(new LanguageScreen(from));
+            Flow.get(this).set(new LanguageScreen(FROM));
         }
 
         @OnClick(R.id.change_dir_img)
             void onClick(){
              String to = mTranslateTo.getText().toString();
             String from = mTranslateFrom.getText().toString();
+            String codeTo = mRootPresenter.getLanguageCodeTo();
+            String codeFrom = mRootPresenter.getLanguageCodeFrom();
             mTranslateTo.setText(from);
             mTranslateFrom.setText(to);
+            mRootPresenter.setLanguageCodeTo(codeFrom);
+            mRootPresenter.setLanguageCodeFrom(codeTo);
         }
 
 

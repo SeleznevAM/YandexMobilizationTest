@@ -1,6 +1,7 @@
 package com.applications.whazzup.yandextranslator.di.modules;
 
 import com.applications.whazzup.yandextranslator.di.scopes.RootScope;
+import com.applications.whazzup.yandextranslator.mvp.models.RootModel;
 import com.applications.whazzup.yandextranslator.mvp.presenters.RootPresenter;
 
 import dagger.Module;
@@ -15,6 +16,12 @@ public class RootModule {
     @RootScope
     RootPresenter provideRootPresenter(){
         return RootPresenter.getInstace();
+    }
+
+    @Provides
+    @RootScope
+    RootModel provideRootModel(){
+        return new RootModel();
     }
 }
 

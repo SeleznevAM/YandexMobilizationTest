@@ -6,7 +6,9 @@ import com.applications.whazzup.yandextranslator.data.network.RestService;
 import com.applications.whazzup.yandextranslator.data.network.res.YandexLangRes;
 import com.applications.whazzup.yandextranslator.data.network.res.YandexTranslateRes;
 import com.applications.whazzup.yandextranslator.di.components.DaggerDataManagerComponent;
+import com.applications.whazzup.yandextranslator.di.modules.LocalModule;
 import com.applications.whazzup.yandextranslator.di.modules.NetworkModule;
+import com.applications.whazzup.yandextranslator.utils.ConstantManager;
 
 import java.util.Map;
 
@@ -22,6 +24,8 @@ public class DataManager {
 
     @Inject
     RestService mRestService;
+    @Inject
+    PreferencesManager mPreferencesManager;
 
     RealmManager mRealmManager = new RealmManager();
 
@@ -34,7 +38,11 @@ public class DataManager {
 
 
     private DataManager() {
-        DaggerDataManagerComponent.builder().appComponent(App.getAppComponent()).networkModule(new NetworkModule()).build().inject(this);
+        DaggerDataManagerComponent.builder()
+                .appComponent(App.getAppComponent())
+                .networkModule(new NetworkModule())
+                .localModule(new LocalModule())
+                .build().inject(this);
     }
 
 
@@ -55,18 +63,15 @@ public class DataManager {
         });
     }
 
-    public void translateText(String text){
-        Call<YandexTranslateRes> call = mRestService.translateText("trnsl.1.1.20170315T090000Z.1bbd09f1e8dede27.4aad6b1dded1e6519341fbcfd427ebea820535bd", "Привет", "ru-en");
-        call.enqueue(new Callback<YandexTranslateRes>() {
-            @Override
-            public void onResponse(Call<YandexTranslateRes> call, Response<YandexTranslateRes> response) {
-                System.out.println(response.body().text);
-            }
+    public Call<YandexTranslateRes> translateText(String text, String direction){
+        return mRestService.translateText(ConstantManager.API_KEY, text, direction);
+    }
 
-            @Override
-            public void onFailure(Call<YandexTranslateRes> call, Throwable t) {
+    public PreferencesManager getPreferencesManager() {
+        return mPreferencesManager;
+    }
 
-            }
-        });
+    public RealmManager getRealmManager() {
+        return mRealmManager;
     }
 }

@@ -4,6 +4,7 @@ package com.applications.whazzup.yandextranslator.data.managers;
 import com.applications.whazzup.yandextranslator.data.storage.realm.LangRealm;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
@@ -12,6 +13,7 @@ public class RealmManager {
 
     public void saveLangToRealm(String id, String lang){
         Realm realm = Realm.getDefaultInstance();
+
 
         final LangRealm langRealm = new LangRealm(id, lang);
 
@@ -30,7 +32,12 @@ public class RealmManager {
         return list;
     }
 
+    public LangRealm getLangByCode(String code){
+        return getQueryRealmInstance().where(LangRealm.class).equalTo("id", code).findFirst();
+    }
+
     private Realm getQueryRealmInstance() {
+
         if(mRealmInstance == null || mRealmInstance.isClosed()) {
             mRealmInstance = Realm.getDefaultInstance();
         }
