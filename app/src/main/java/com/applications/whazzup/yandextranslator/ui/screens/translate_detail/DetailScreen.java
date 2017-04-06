@@ -69,7 +69,7 @@ public class DetailScreen extends AbstractScreen<RootActivity.RootComponent> {
         }
 
         private void initAppBar(){
-            mRootPresenter.newActionBarBuilder().setDirectionVisible(false).setBackArrow(true).setTab(getView().getViewPager()).build();
+            mRootPresenter.newActionBarBuilder().setActionBarVisible(false).setDirectionVisible(false).setBackArrow(true).setTab(getView().getViewPager()).build();
         }
     }
 

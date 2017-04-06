@@ -10,6 +10,7 @@ import com.applications.whazzup.yandextranslator.di.modules.LocalModule;
 import com.applications.whazzup.yandextranslator.di.modules.NetworkModule;
 import com.applications.whazzup.yandextranslator.utils.ConstantManager;
 
+import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -47,7 +48,7 @@ public class DataManager {
 
 
     public void getAllLag() {
-        Call<YandexLangRes> call = mRestService.getAllLang("trnsl.1.1.20170315T090000Z.1bbd09f1e8dede27.4aad6b1dded1e6519341fbcfd427ebea820535bd", "ru");
+        Call<YandexLangRes> call = mRestService.getAllLang(ConstantManager.API_KEY, Locale.getDefault().getLanguage());
         call.enqueue(new Callback<YandexLangRes>() {
             @Override
             public void onResponse(Call<YandexLangRes> call, Response<YandexLangRes> response) {

@@ -9,6 +9,9 @@ import com.applications.whazzup.yandextranslator.mvp.models.RootModel;
 import com.applications.whazzup.yandextranslator.mvp.views.IRootView;
 import com.applications.whazzup.yandextranslator.ui.activities.RootActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import mortar.Presenter;
@@ -56,7 +59,9 @@ public class RootPresenter extends Presenter<IRootView> {
         private boolean isGoBack;
         private ViewPager viewPager;
         private boolean directionVisible;
+        private List<MenuItemHolder> item = new ArrayList<>();
         private int toolBArMode = DEFAULT_MODE;
+        private boolean visible = true;
 
        public ActionBarBuilder setBackArrow(boolean enable){
             this.isGoBack = enable;
@@ -65,6 +70,16 @@ public class RootPresenter extends Presenter<IRootView> {
 
         public ActionBarBuilder setDirectionVisible(boolean isVisible){
             this.directionVisible = isVisible;
+            return this;
+        }
+
+        public ActionBarBuilder addAction(MenuItemHolder itemMenu){
+            this.item.add(itemMenu);
+            return this;
+        }
+
+        public ActionBarBuilder setActionBarVisible(boolean isVisible){
+            this.visible = isVisible;
             return this;
         }
 
@@ -78,12 +93,14 @@ public class RootPresenter extends Presenter<IRootView> {
             if(getView()!=null){
                 RootActivity activity = (RootActivity) getView();
                 activity.setBackArrow(isGoBack);
+                activity.setMenuItem(item);
                 if (toolBArMode == TAB_MODE) {
                     activity.setTabLayout(viewPager);
                 } else {
                     activity.removeTabLayout();
                 }
                 activity.directionVisible(directionVisible);
+                activity.actionBarVisible(visible);
             }
         }
     }

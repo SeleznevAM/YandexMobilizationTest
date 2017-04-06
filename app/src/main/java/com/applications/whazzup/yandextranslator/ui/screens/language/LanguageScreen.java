@@ -90,6 +90,12 @@ public class LanguageScreen extends AbstractScreen<TranslateScreen.Component> im
                 getView().getAdapter().addItem(r);
             }
 
+            initActionBar();
+
+        }
+
+        private void initActionBar() {
+
         }
 
         @Override

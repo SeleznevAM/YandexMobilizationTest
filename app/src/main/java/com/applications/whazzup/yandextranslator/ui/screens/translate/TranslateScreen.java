@@ -7,6 +7,7 @@ import android.util.Log;
 import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.data.network.res.YandexLangRes;
 import com.applications.whazzup.yandextranslator.data.network.res.YandexTranslateRes;
+import com.applications.whazzup.yandextranslator.data.storage.realm.TranslateRealm;
 import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.di.scopes.TranslateScope;
 import com.applications.whazzup.yandextranslator.flow.AbstractScreen;
@@ -30,11 +31,7 @@ import retrofit2.Response;
 @Screen(R.layout.screen_translate)
 public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> {
 
-
-
-
     public TranslateScreen() {
-        Log.e("Screen", " Create");
     }
 
     @Override
@@ -82,10 +79,7 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-           // mModel.getAllLang();
-
             initActionBar();
-
         }
 
         @Override
@@ -94,20 +88,29 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
         }
 
         public void clickOnLangBtn() {
-            //Flow.get(getView()).set(new LanguageScreen(0));
-            //mRootPresenter.getRootView().showMessage(mRootPresenter.getLanguageCodeFrom() + " - " + mRootPresenter.getLanguageCodeTo());
-           Call<YandexTranslateRes> call = mModel.translateText(getView().getTranslateText(), mRootPresenter.getLanguageCodeFrom() + "-" + mRootPresenter.getLanguageCodeTo());
-            call.enqueue(new Callback<YandexTranslateRes>() {
-                @Override
-                public void onResponse(Call<YandexTranslateRes> call, Response<YandexTranslateRes> response) {
-                    getView().setTranslateTest(response.body().text.toString());
-                }
+            final String direction = mRootPresenter.getLanguageCodeFrom() + "-" + mRootPresenter.getLanguageCodeTo();
+            TranslateRealm realm = mModel.getTranslateRealmFromDb(getView().getTranslateText(), direction);
 
-                @Override
-                public void onFailure(Call<YandexTranslateRes> call, Throwable t) {
+            if (realm == null) {
+                Call<YandexTranslateRes> call = mModel.translateText(getView().getTranslateText(), direction);
+                call.enqueue(new Callback<YandexTranslateRes>() {
+                    @Override
+                    public void onResponse(Call<YandexTranslateRes> call, Response<YandexTranslateRes> response) {
 
-                }
-            });
+                        mModel.saveTransletInHistory(getView().getTranslateText(), response.body().text.get(0), direction, false);
+                        getView().setTranslateTest(response.body().text.get(0));
+                    }
+
+                    @Override
+                    public void onFailure(Call<YandexTranslateRes> call, Throwable t) {
+
+                    }
+                });
+            }else{
+                getView().setTranslateTest(realm.getTranslateText());
+            }
+
+
         }
 
         private void initActionBar(){

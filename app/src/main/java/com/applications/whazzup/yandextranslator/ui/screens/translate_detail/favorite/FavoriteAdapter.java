@@ -1,4 +1,5 @@
-package com.applications.whazzup.yandextranslator.ui.screens.translate_detail.history;
+package com.applications.whazzup.yandextranslator.ui.screens.translate_detail.favorite;
+
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,10 +9,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.applications.whazzup.yandextranslator.R;
+import com.applications.whazzup.yandextranslator.data.storage.realm.FavoriteRealm;
 import com.applications.whazzup.yandextranslator.data.storage.realm.TranslateRealm;
-import com.applications.whazzup.yandextranslator.ui.screens.language.LanguageAdapter;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +18,40 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
+public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
 
-    private List<TranslateRealm> list = new ArrayList<>();
-    private onHistoryClickListener mListener;
+    List<FavoriteRealm> list = new ArrayList<>();
+    CustomClickListener mListener;
 
-    public HistoryAdapter(onHistoryClickListener listener) {
+    public FavoriteAdapter(CustomClickListener listener) {
         mListener = listener;
     }
+
+    public FavoriteAdapter(List<FavoriteRealm> list, CustomClickListener listener) {
+        this.list = list;
+        mListener = listener;
+    }
+
+    public void addItem(FavoriteRealm item){
+        list.add(item);
+        notifyDataSetChanged();
+    }
+
+
+    public void deleteItem(int position){
+        list.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public FavoriteRealm getFavoriteFromPosition(int position){
+        return list.get(position);
+    }
+
+    public void clearFavorite(){
+        list.clear();
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -34,23 +59,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         return new ViewHolder(v);
     }
 
-    public void addItem(TranslateRealm translateRealm){
-        list.add(translateRealm);
-        notifyDataSetChanged();
-    }
-
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        TranslateRealm realm = list.get(position);
-        holder.isFacoriteCheckBox.setChecked(realm.isFavorite());
+        FavoriteRealm realm = list.get(position);
+        holder.isFavoriteCheckBox.setChecked(true);
         holder.mOriginalText.setText(realm.getOriginalText());
         holder.mTranslateText.setText(realm.getTranslateText());
         holder.mDirection.setText(realm.getDirection());
 
-    }
-
-    public TranslateRealm getTranslateFromPostition(int position){
-        return list.get(position);
     }
 
     @Override
@@ -58,15 +74,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         return list.size();
     }
 
-    public void clearHistory() {
-        list.clear();
-        notifyDataSetChanged();
-    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.favorite_cbx)
-        CheckBox isFacoriteCheckBox;
+        CheckBox isFavoriteCheckBox;
         @BindView(R.id.original_txt)
         TextView mOriginalText;
         @BindView(R.id.translate_txt)
@@ -76,19 +89,19 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
-            isFacoriteCheckBox.setOnClickListener(this);
+            ButterKnife.bind(this, itemView);
+            isFavoriteCheckBox.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             if(mListener!=null){
-                mListener.onHistoryItemClick(getAdapterPosition(), v);
+                mListener.clickOnFavorite(getAdapterPosition());
             }
         }
     }
 
-    public interface onHistoryClickListener{
-        void onHistoryItemClick(int position, View v);
+    public interface CustomClickListener{
+        void clickOnFavorite(int position);
     }
 }

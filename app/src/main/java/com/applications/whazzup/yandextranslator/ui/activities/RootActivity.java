@@ -11,23 +11,21 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.data.storage.realm.LangRealm;
 import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.di.components.AppComponent;
 import com.applications.whazzup.yandextranslator.di.modules.RootModule;
 import com.applications.whazzup.yandextranslator.di.scopes.RootScope;
-import com.applications.whazzup.yandextranslator.di.scopes.TranslateScope;
 import com.applications.whazzup.yandextranslator.flow.TreeKeyDispatcher;
+import com.applications.whazzup.yandextranslator.mvp.presenters.MenuItemHolder;
 import com.applications.whazzup.yandextranslator.mvp.presenters.RootPresenter;
 import com.applications.whazzup.yandextranslator.mvp.views.IActionBarView;
 import com.applications.whazzup.yandextranslator.mvp.views.IRootView;
@@ -35,6 +33,11 @@ import com.applications.whazzup.yandextranslator.mvp.views.IView;
 import com.applications.whazzup.yandextranslator.ui.screens.language.LanguageScreen;
 import com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateScreen;
 import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.DetailScreen;
+import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.favorite.FavoriteScreen;
+import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.history.HistoryScreen;
+
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -75,6 +78,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
     LinearLayout mDirectionWrapper;
 
     ActionBar mActionBar;
+    private List<MenuItemHolder> mActionBarMenuItems;
 
 
     @Inject
@@ -93,7 +97,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
 
     }
  @Override
-    public Object getSystemService(String name) {
+    public Object getSystemService(@NonNull String name) {
         MortarScope rootActivityScope = MortarScope.findChild(getApplicationContext(), RootActivity.class.getName());
         return rootActivityScope.hasService(name) ? rootActivityScope.getService(name) : super.getSystemService(name);
     }
@@ -131,6 +135,14 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
         mRootPresenter.takeView(this);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (getCurrentScreen() != null && !viewOnBackPressed() && !Flow.get(this).goBack()) {
+            super.onBackPressed();
+        } else {
+
+        }
+    }
 
     // region================IRootView==============
 
@@ -161,15 +173,23 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
 
     @Override
     public void setLanTo(LangRealm language) {
-        mTranslateTo.setText(language.getLang());
-        mRootPresenter.setLanguageCodeTo(language.getId());
+        if(language!=null){
+            mTranslateTo.setText(language.getLang());
+            mRootPresenter.setLanguageCodeTo(language.getId());
+        }else{
+            mTranslateTo.setText("Русский");
+        }
+
     }
 
     @Override
     public void setLanFrom(LangRealm language) {
-        mTranslateFrom.setText(language.getLang());
-        mRootPresenter.setLanguageCodeFrom(language.getId());
-        //translateFrom = language.getId();
+        if(language!=null) {
+            mTranslateFrom.setText(language.getLang());
+            mRootPresenter.setLanguageCodeFrom(language.getId());
+        }else{
+            mTranslateFrom.setText("Английский");
+        }
     }
 
 
@@ -188,11 +208,11 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
                 break;
 
             case R.id.navigation_dashboard:
-                key = new DetailScreen();
+                key = new HistoryScreen();
                 break;
 
             case R.id.navigation_notifications:
-                key = new TranslateScreen();
+                key  = new FavoriteScreen();
                 break;
         }
         if(key!=null){
@@ -241,10 +261,11 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
 
     @Override
     public void setTabLayout(ViewPager viewPager) {
+        if(mAppBarLayout.getChildCount()<2){
         TabLayout tabView = new TabLayout(this);
         tabView.setupWithViewPager(viewPager);
         mAppBarLayout.addView(tabView);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabView));
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabView));}
     }
 
     @Override
@@ -264,6 +285,39 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
         }
     }
 
+    @Override
+    public void actionBarVisible(boolean isVisible) {
+        if(isVisible){
+            mActionBar.show();
+        }else{
+            mActionBar.hide();
+        }
+    }
+
+    @Override
+    public void setMenuItem(List<MenuItemHolder> items) {
+            mActionBarMenuItems = items;
+            supportInvalidateOptionsMenu();
+
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (mActionBarMenuItems != null && !mActionBarMenuItems.isEmpty()) {
+            for (MenuItemHolder menuItem : mActionBarMenuItems) {
+                MenuItem item = menu.add(menuItem.getItemTitle());
+                item.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                        .setIcon(menuItem.getIconResId())
+                        .setOnMenuItemClickListener(menuItem.getListener());
+
+                //.setOnMenuItemClickListener(menuItem.getListener());
+            }
+        } else {
+            menu.clear();
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     // region================DI==============
 
 
@@ -277,4 +331,5 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
     }
 
     // endregion
+
 }

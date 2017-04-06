@@ -1,9 +1,15 @@
 package com.applications.whazzup.yandextranslator.flow;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -11,6 +17,7 @@ import android.widget.FrameLayout;
 import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.mortar.ScreenScoper;
 import com.applications.whazzup.yandextranslator.ui.activities.RootActivity;
+import com.applications.whazzup.yandextranslator.utils.ViewHelper;
 
 import java.util.Collections;
 import java.util.Map;
@@ -63,7 +70,7 @@ public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
     }
 
     @Override
-    public void changeKey(@Nullable State outgoingState, State incomingState, Direction direction, Map<Object, Context> incomingContexts, TraversalCallback callback) {
+    public void changeKey(@Nullable State outgoingState, State incomingState, final Direction direction, Map<Object, Context> incomingContexts, final TraversalCallback callback) {
         Context context = incomingContexts.get(inKey);
 
         /**
@@ -84,7 +91,8 @@ public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
         } else {
             int layouyt = screen.value();
             LayoutInflater inflater = LayoutInflater.from(context);
-            View newView = inflater.inflate(layouyt, mRootFrame, false);
+            final View newView = inflater.inflate(layouyt, mRootFrame, false);
+            final View oldView = mRootFrame.getChildAt(0);
 
             /**
              * restore state new view
@@ -104,7 +112,7 @@ public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
                 mRootFrame.removeView(mRootFrame.getChildAt(0));
             }
             mRootFrame.addView(newView);
-            callback.onTraversalCompleted();
+           callback.onTraversalCompleted();
         }
     }
 }

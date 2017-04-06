@@ -10,6 +10,7 @@ import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.flow.AbstractScreen;
 import com.applications.whazzup.yandextranslator.ui.screens.language.LanguageScreen;
 import com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateScreen;
+import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.favorite.FavoriteScreen;
 import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.history.HistoryScreen;
 
 import mortar.MortarScope;
@@ -35,7 +36,7 @@ public class DetailAdpater extends PagerAdapter {
                 screen = new HistoryScreen();
                 break;
             case 1:
-                screen = new HistoryScreen();
+                screen = new FavoriteScreen();
                 break;
         }
 
@@ -57,10 +58,10 @@ public class DetailAdpater extends PagerAdapter {
         String title = "";
         switch (position) {
             case 0:
-                title = "Избранное";
+                title = "История";
                 break;
             case 1:
-                title = "История";
+                title = "Избранное";
                 break;
         }
         return title;
@@ -72,7 +73,7 @@ public class DetailAdpater extends PagerAdapter {
         if(childScope==null){
             Object screenComponent = screen.createScreenComponent(parentScope.getService(DaggerService.SERVICE_NAME));
             if(screenComponent==null){
-                throw new IllegalStateException("dont create screen component " + screen.getScopeName());
+                throw new IllegalStateException("don't create screen component " + screen.getScopeName());
             }
 
             childScope = parentScope.buildChild().withService(DaggerService.SERVICE_NAME, screenComponent)

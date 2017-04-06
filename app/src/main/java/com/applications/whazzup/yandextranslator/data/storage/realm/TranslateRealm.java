@@ -6,17 +6,18 @@ import io.realm.annotations.PrimaryKey;
 
 public class TranslateRealm extends RealmObject {
 
-
+    @PrimaryKey
+    private String id;
     private String originalText;
     private String translateText;
     private String direction;
     private boolean isFavorite;
 
     public TranslateRealm() {
-
     }
 
     public TranslateRealm(String originalText, String translateText, String direction, boolean isFavorite) {
+        this.id = String.valueOf(this.hashCode());
         this.originalText = originalText;
         this.translateText = translateText;
         this.direction = direction;
@@ -41,5 +42,9 @@ public class TranslateRealm extends RealmObject {
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+
+    public void changeFavorite(){
+        setFavorite(!this.isFavorite);
     }
 }
