@@ -2,6 +2,7 @@ package com.applications.whazzup.yandextranslator.di.modules;
 
 
 import com.applications.whazzup.yandextranslator.data.network.RestService;
+import com.applications.whazzup.yandextranslator.utils.AppConfig;
 import com.applications.whazzup.yandextranslator.utils.ConstantManager;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
@@ -53,7 +54,7 @@ public class NetworkModule {
 
     private Retrofit createRetrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
-                .baseUrl(ConstantManager.BASE_URL)
+                .baseUrl(AppConfig.BASE_URL)
                 .addConverterFactory(createConvertFactory())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(okHttpClient)
@@ -62,8 +63,5 @@ public class NetworkModule {
 
     private Converter.Factory createConvertFactory() {
         return GsonConverterFactory.create();
-        /*return MoshiConverterFactory.create(new Moshi.Builder()
-                .add(new CommentJsonAdapter()) //this error 1:40
-                .build());*/
     }
 }

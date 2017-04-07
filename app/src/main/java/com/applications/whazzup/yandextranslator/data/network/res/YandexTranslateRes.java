@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * POJO перевода текста от сервера
+ */
 public class YandexTranslateRes {
 
     @SerializedName("code")

@@ -28,7 +28,7 @@ public class DataManager {
     @Inject
     PreferencesManager mPreferencesManager;
 
-    RealmManager mRealmManager = new RealmManager();
+    private RealmManager mRealmManager = new RealmManager();
 
     public static DataManager getInstance() {
         if (ourInstance == null) {

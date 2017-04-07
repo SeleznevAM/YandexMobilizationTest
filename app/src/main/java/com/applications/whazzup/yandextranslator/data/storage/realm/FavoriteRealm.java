@@ -14,12 +14,6 @@ public class FavoriteRealm extends RealmObject {
     public FavoriteRealm() {
     }
 
-    public FavoriteRealm(String originalText, String translateText, String direction) {
-        this.id = String.valueOf(this.hashCode());
-        this.originalText = originalText;
-        this.translateText = translateText;
-        this.direction = direction;
-    }
 
     public FavoriteRealm(TranslateRealm translateRealm){
         this.id = String.valueOf(this.hashCode());

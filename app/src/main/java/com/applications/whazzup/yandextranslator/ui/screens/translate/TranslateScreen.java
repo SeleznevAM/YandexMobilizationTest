@@ -1,11 +1,11 @@
 package com.applications.whazzup.yandextranslator.ui.screens.translate;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.util.Log;
+
+import android.widget.Toast;
 
 import com.applications.whazzup.yandextranslator.R;
-import com.applications.whazzup.yandextranslator.data.network.res.YandexLangRes;
+
 import com.applications.whazzup.yandextranslator.data.network.res.YandexTranslateRes;
 import com.applications.whazzup.yandextranslator.data.storage.realm.TranslateRealm;
 import com.applications.whazzup.yandextranslator.di.DaggerService;
@@ -16,12 +16,12 @@ import com.applications.whazzup.yandextranslator.mvp.models.TranslateModel;
 import com.applications.whazzup.yandextranslator.mvp.presenters.AbstractPresenter;
 import com.applications.whazzup.yandextranslator.mvp.presenters.RootPresenter;
 import com.applications.whazzup.yandextranslator.ui.activities.RootActivity;
-import com.applications.whazzup.yandextranslator.ui.screens.language.LanguageScreen;
+
 
 import javax.inject.Inject;
 
 import dagger.Provides;
-import flow.Flow;
+
 import mortar.MortarScope;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -89,16 +89,21 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
 
         public void clickOnLangBtn() {
             final String direction = mRootPresenter.getLanguageCodeFrom() + "-" + mRootPresenter.getLanguageCodeTo();
-            TranslateRealm realm = mModel.getTranslateRealmFromDb(getView().getTranslateText(), direction);
+            TranslateRealm realm = mModel.getTranslateRealmFromDb(getView().getTranslateText().trim(), direction);
 
             if (realm == null) {
-                Call<YandexTranslateRes> call = mModel.translateText(getView().getTranslateText(), direction);
+                Call<YandexTranslateRes> call = mModel.translateText(getView().getTranslateText().trim(), direction);
                 call.enqueue(new Callback<YandexTranslateRes>() {
                     @Override
                     public void onResponse(Call<YandexTranslateRes> call, Response<YandexTranslateRes> response) {
 
+                        if(response.code()==200){
                         mModel.saveTransletInHistory(getView().getTranslateText(), response.body().text.get(0), direction, false);
-                        getView().setTranslateTest(response.body().text.get(0));
+
+                        getView().setTranslateTest(response.body().text.get(0));}
+                        else{
+                            Toast.makeText(getView().getContext(), "Что то пошло не так, повторите запрос", Toast.LENGTH_LONG).show();
+                    }
                     }
 
                     @Override
@@ -109,8 +114,6 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
             }else{
                 getView().setTranslateTest(realm.getTranslateText());
             }
-
-
         }
 
         private void initActionBar(){

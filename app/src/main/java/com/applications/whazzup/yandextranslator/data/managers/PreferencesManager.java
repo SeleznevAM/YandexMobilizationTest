@@ -9,7 +9,7 @@ import com.applications.whazzup.yandextranslator.utils.ConstantManager;
 public class PreferencesManager {
 
     private SharedPreferences mSharedPreferences;
-    Context mContext;
+    private Context mContext;
 
     public PreferencesManager(Context context) {
         this.mSharedPreferences = App.getSharedPreferences();
@@ -17,22 +17,23 @@ public class PreferencesManager {
     }
 
     public String getLanguageTo(){
-        return mSharedPreferences.getString(ConstantManager.LANGUAGETO, "en");
+        return mSharedPreferences.getString(ConstantManager.LANGUAGE_TO, "en");
     }
 
     public String getLanguageFrom(){
-        return mSharedPreferences.getString(ConstantManager.LANGUAGEFROM, "ru");
+        return mSharedPreferences.getString(ConstantManager.LANGUAGE_FROM, "ru");
     }
+
 
     public void saveLanguageTo(String language){
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(ConstantManager.LANGUAGETO, language);
+        editor.putString(ConstantManager.LANGUAGE_TO, language);
         editor.apply();
     }
 
     public void saveLanguageFrom(String language){
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(ConstantManager.LANGUAGEFROM, language);
+        editor.putString(ConstantManager.LANGUAGE_FROM, language);
         editor.apply();
     }
 

@@ -1,23 +1,19 @@
 package com.applications.whazzup.yandextranslator.flow;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
+
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
+
 import android.support.annotation.Nullable;
-import android.support.v4.view.animation.FastOutLinearInInterpolator;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.mortar.ScreenScoper;
-import com.applications.whazzup.yandextranslator.ui.activities.RootActivity;
-import com.applications.whazzup.yandextranslator.utils.ViewHelper;
+
 
 import java.util.Collections;
 import java.util.Map;
@@ -46,7 +42,7 @@ public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
 
     @Override
     public void dispatch(Traversal traversal, TraversalCallback callback) {
-        Map<Object, Context> mConexts;
+        Map<Object, Context> mContexts;
         State inState = traversal.getState(traversal.destination.top());
         inKey = inState.getKey();
         State outState = traversal.origin == null ? null : traversal.getState(traversal.origin.top());
@@ -59,14 +55,11 @@ public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
             return;
         }
 
-        if (inKey instanceof TreeKey) {
-            // TODO: 27.11.2016 implements treeKey case
-        }
         // TODO: 27.11.2016 create mortar context for screen
         Context flowContext = traversal.createContext(inKey, mActivity);
         Context mortarContext = ScreenScoper.getScreenScope((AbstractScreen)inKey).createContext(flowContext);
-        mConexts = Collections.singletonMap(inKey, mortarContext);
-        changeKey(outState, inState, traversal.direction, mConexts, callback);
+        mContexts = Collections.singletonMap(inKey, mortarContext);
+        changeKey(outState, inState, traversal.direction, mContexts, callback);
     }
 
     @Override

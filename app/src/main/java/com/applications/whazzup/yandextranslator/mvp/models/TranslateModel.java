@@ -33,7 +33,7 @@ public class TranslateModel extends AbstractModel {
     }
 
     public String getTranslateTextFromBb(String originalText){
-        return mDataManager.getRealmManager().getTranslateTextFromBb(originalText);
+        return mDataManager.getRealmManager().getTranslateTextFromBd(originalText);
     }
 
     public TranslateRealm getTranslateRealmFromDb(String originalText, String direction){

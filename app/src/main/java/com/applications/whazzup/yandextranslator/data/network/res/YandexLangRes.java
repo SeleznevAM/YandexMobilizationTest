@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * POJO получения списка языков от сервера
+ */
 public class YandexLangRes {
     @SerializedName("dirs")
     @Expose

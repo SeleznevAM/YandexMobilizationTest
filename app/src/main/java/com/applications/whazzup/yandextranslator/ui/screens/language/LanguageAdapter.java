@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+
 import android.widget.TextView;
 
 import com.applications.whazzup.yandextranslator.R;
@@ -24,21 +24,18 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
     private CustomClickListener mClickListener;
 
 
-    public LanguageAdapter(CustomClickListener clickListener) {
+    LanguageAdapter(CustomClickListener clickListener) {
         mClickListener = clickListener;
     }
 
-    public LanguageAdapter(List<LangRealm> languageList) {
-        mLanguageList = languageList;
-    }
 
-    public void addItem(LangRealm language){
+    void addItem(LangRealm language){
         mLanguageList.add(language);
         Collections.sort(mLanguageList);
         notifyDataSetChanged();
     }
 
-    public LangRealm getLangFromPosition(int position){
+    LangRealm getLangFromPosition(int position){
         return mLanguageList.get(position);
     }
 
@@ -60,13 +57,13 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
         return mLanguageList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.language_item_text)
         TextView mLanguage;
 
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
             mLanguage.setOnClickListener(this);
@@ -80,7 +77,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
         }
     }
 
-    public interface CustomClickListener{
+    interface CustomClickListener{
         void onLanguageClickListener(int position);
     }
 }

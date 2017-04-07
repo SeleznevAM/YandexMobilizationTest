@@ -6,16 +6,18 @@ import com.applications.whazzup.yandextranslator.data.storage.realm.LangRealm;
 
 public interface IRootView extends IView {
 
-    void showMessage (String message);
-    void showError (Throwable e);
+    void showMessage(String message);
+
+    void showError(Throwable e);
 
 
     void showLoad();
+
     void hideLoad();
 
-    public void setLanTo(LangRealm language);
+    void setLanTo(LangRealm language);
 
-    public void setLanFrom(LangRealm language);
+    void setLanFrom(LangRealm language);
 
     @Nullable
     IView getCurrentScreen();

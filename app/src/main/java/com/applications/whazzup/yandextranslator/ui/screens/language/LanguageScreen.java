@@ -4,7 +4,6 @@ package com.applications.whazzup.yandextranslator.ui.screens.language;
 import android.os.Bundle;
 
 import com.applications.whazzup.yandextranslator.R;
-import com.applications.whazzup.yandextranslator.data.managers.RealmManager;
 import com.applications.whazzup.yandextranslator.data.storage.realm.LangRealm;
 import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.di.scopes.LanguageScope;
@@ -14,10 +13,6 @@ import com.applications.whazzup.yandextranslator.mvp.models.LanguageModel;
 import com.applications.whazzup.yandextranslator.mvp.presenters.AbstractPresenter;
 import com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateScreen;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import dagger.Provides;
 import flow.Flow;
 import flow.TreeKey;
@@ -26,10 +21,8 @@ import mortar.MortarScope;
 @Screen(R.layout.screen_language)
 public class LanguageScreen extends AbstractScreen<TranslateScreen.Component> implements TreeKey {
 
-    RealmManager mRealmManager = new RealmManager();
-
-
-    int direction;
+    //Переменная для отслеживания направления перевода
+    private int direction;
 
     public LanguageScreen(int i) {
         this.direction = i;
@@ -58,8 +51,8 @@ public class LanguageScreen extends AbstractScreen<TranslateScreen.Component> im
 
         @Provides
         @LanguageScope
-        LabguagePresenter providePresenter(){
-            return new LabguagePresenter();
+        LanguagePresenter providePresenter(){
+            return new LanguagePresenter();
         }
     }
 
@@ -68,7 +61,7 @@ public class LanguageScreen extends AbstractScreen<TranslateScreen.Component> im
     public interface Component{
 
         void inject(LanguageView view);
-        void inject(LabguagePresenter presenter);
+        void inject(LanguagePresenter presenter);
     }
 
 
@@ -77,31 +70,31 @@ public class LanguageScreen extends AbstractScreen<TranslateScreen.Component> im
 
     //region===============================Presenter==========================
 
-    class LabguagePresenter extends AbstractPresenter<LanguageView, LanguageModel>{
-
-
-
-        @Override
-        protected void onLoad(Bundle savedInstanceState) {
-            super.onLoad(savedInstanceState);
-            getView().initView();
-
-            for(LangRealm  r : mRealmManager.getAllLang()){
-                getView().getAdapter().addItem(r);
-            }
-
-            initActionBar();
-
-        }
-
-        private void initActionBar() {
-
-        }
+    class LanguagePresenter extends AbstractPresenter<LanguageView, LanguageModel>{
 
         @Override
         protected void initDagger(MortarScope scope) {
             ((LanguageScreen.Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
         }
+
+        @Override
+        protected void onLoad(Bundle savedInstanceState) {
+            super.onLoad(savedInstanceState);
+            getView().initView();
+            fillLanguageAdapter();
+            initActionBar();
+        }
+
+        private void initActionBar() {
+          mRootPresenter.newActionBarBuilder().setBackArrow(true).setTitle("Язык перевода").build();
+        }
+
+        private void fillLanguageAdapter(){
+            for(LangRealm  r : mModel.getAllLang()){
+                getView().getAdapter().addItem(r);
+            }
+        }
+
 
         public void selectLang(LangRealm language) {
             if(direction==1){

@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.data.storage.realm.LangRealm;
 import com.applications.whazzup.yandextranslator.di.DaggerService;
@@ -85,8 +86,6 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
     RootPresenter mRootPresenter;
 
 
-
-
     @Override
     protected void attachBaseContext(Context newBase) {
         newBase = Flow.configure(newBase, this)
@@ -96,7 +95,8 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
         super.attachBaseContext(newBase);
 
     }
- @Override
+
+    @Override
     public Object getSystemService(@NonNull String name) {
         MortarScope rootActivityScope = MortarScope.findChild(getApplicationContext(), RootActivity.class.getName());
         return rootActivityScope.hasService(name) ? rootActivityScope.getService(name) : super.getSystemService(name);
@@ -117,7 +117,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
         navigation.setOnNavigationItemSelectedListener(this);
     }
 
-    private void initToolBar(){
+    private void initToolBar() {
         setSupportActionBar(mToolBar);
         mActionBar = getSupportActionBar();
         mActionBar.setTitle("");
@@ -141,6 +141,39 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
             super.onBackPressed();
         } else {
 
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Object key = null;
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                key = new TranslateScreen();
+                break;
+
+            case R.id.navigation_dashboard:
+                key = new HistoryScreen();
+                break;
+
+            case R.id.navigation_notifications:
+                key = new FavoriteScreen();
+                break;
+        }
+        if (key != null) {
+            Flow.get(this).set(key);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Flow.get(this).goBack();
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -173,10 +206,10 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
 
     @Override
     public void setLanTo(LangRealm language) {
-        if(language!=null){
+        if (language != null) {
             mTranslateTo.setText(language.getLang());
             mRootPresenter.setLanguageCodeTo(language.getId());
-        }else{
+        } else {
             mTranslateTo.setText("Русский");
         }
 
@@ -184,10 +217,10 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
 
     @Override
     public void setLanFrom(LangRealm language) {
-        if(language!=null) {
+        if (language != null) {
             mTranslateFrom.setText(language.getLang());
             mRootPresenter.setLanguageCodeFrom(language.getId());
-        }else{
+        } else {
             mTranslateFrom.setText("Английский");
         }
     }
@@ -199,105 +232,61 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
         return (IView) mRootFrame.getChildAt(0);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Object key = null;
-        switch (item.getItemId()) {
-            case R.id.navigation_home:
-                key  = new TranslateScreen();
-                break;
-
-            case R.id.navigation_dashboard:
-                key = new HistoryScreen();
-                break;
-
-            case R.id.navigation_notifications:
-                key  = new FavoriteScreen();
-                break;
-        }
-        if(key!=null){
-            Flow.get(this).set(key);
-            return true;
-        }
-        return false;
-    }
-
     // endregion
 
 
+    //region===============================Events==========================
+
     @OnClick(R.id.translate_from)
-    void click(){
+    void click() {
         Flow.get(this).set(new LanguageScreen(TO));
     }
 
     @OnClick(R.id.translate_to)
-        void clickOn(){
-            Flow.get(this).set(new LanguageScreen(FROM));
-        }
+    void clickOn() {
+        Flow.get(this).set(new LanguageScreen(FROM));
+    }
 
-        @OnClick(R.id.change_dir_img)
-            void onClick(){
-             String to = mTranslateTo.getText().toString();
-            String from = mTranslateFrom.getText().toString();
-            String codeTo = mRootPresenter.getLanguageCodeTo();
-            String codeFrom = mRootPresenter.getLanguageCodeFrom();
-            mTranslateTo.setText(from);
-            mTranslateFrom.setText(to);
-            mRootPresenter.setLanguageCodeTo(codeFrom);
-            mRootPresenter.setLanguageCodeFrom(codeTo);
-        }
+    @OnClick(R.id.change_dir_img)
+    void onClick() {
+        String to = mTranslateTo.getText().toString();
+        String from = mTranslateFrom.getText().toString();
+        String codeTo = mRootPresenter.getLanguageCodeTo();
+        String codeFrom = mRootPresenter.getLanguageCodeFrom();
+        mTranslateTo.setText(from);
+        mTranslateFrom.setText(to);
+        mRootPresenter.setLanguageCodeTo(codeFrom);
+        mRootPresenter.setLanguageCodeFrom(codeTo);
+    }
+    //endregion
 
 
-    //region===============================IActionBArView==========================
+    //region===============================IActionBarView==========================
 
     @Override
     public void setBackArrow(boolean enable) {
-        if(enable){
+        if (enable) {
             mActionBar.setDisplayHomeAsUpEnabled(true);
-        }else{
+        } else {
             mActionBar.setDisplayHomeAsUpEnabled(false);
         }
     }
 
-    @Override
-    public void setTabLayout(ViewPager viewPager) {
-        if(mAppBarLayout.getChildCount()<2){
-        TabLayout tabView = new TabLayout(this);
-        tabView.setupWithViewPager(viewPager);
-        mAppBarLayout.addView(tabView);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabView));}
-    }
-
-    @Override
-    public void removeTabLayout() {
-        View tabView = mAppBarLayout.getChildAt(1);
-        if (tabView != null && tabView instanceof TabLayout) {
-            mAppBarLayout.removeView(tabView);
-        }
-    }
 
     @Override
     public void directionVisible(boolean isVisible) {
-        if(isVisible){
+        if (isVisible) {
             mDirectionWrapper.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mDirectionWrapper.setVisibility(View.GONE);
         }
     }
 
-    @Override
-    public void actionBarVisible(boolean isVisible) {
-        if(isVisible){
-            mActionBar.show();
-        }else{
-            mActionBar.hide();
-        }
-    }
 
     @Override
     public void setMenuItem(List<MenuItemHolder> items) {
-            mActionBarMenuItems = items;
-            supportInvalidateOptionsMenu();
+        mActionBarMenuItems = items;
+        supportInvalidateOptionsMenu();
 
     }
 
@@ -309,8 +298,6 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
                 item.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS)
                         .setIcon(menuItem.getIconResId())
                         .setOnMenuItemClickListener(menuItem.getListener());
-
-                //.setOnMenuItemClickListener(menuItem.getListener());
             }
         } else {
             menu.clear();
@@ -318,15 +305,23 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
         return super.onPrepareOptionsMenu(menu);
     }
 
-    // region================DI==============
+    public void setActionBarTitle(CharSequence title) {
+        mActionBar.setTitle(title);
+    }
 
+    //endregion
+
+
+    // region================DI==============
 
 
     @dagger.Component(dependencies = AppComponent.class, modules = RootModule.class)
     @RootScope
-    public interface RootComponent{
+    public interface RootComponent {
         void inject(RootActivity activity);
-        void inject (RootPresenter presenter);
+
+        void inject(RootPresenter presenter);
+
         RootPresenter getRootPresenter();
     }
 

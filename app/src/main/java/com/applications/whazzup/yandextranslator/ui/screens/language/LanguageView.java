@@ -8,12 +8,11 @@ import android.util.AttributeSet;
 import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.mvp.views.AbstractView;
-import com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateScreen;
 
 import butterknife.BindView;
 
 
-public class LanguageView extends AbstractView<LanguageScreen.LabguagePresenter> {
+public class LanguageView extends AbstractView<LanguageScreen.LanguagePresenter> {
 
     @BindView(R.id.recycler)
             RecyclerView mRecyclerView;

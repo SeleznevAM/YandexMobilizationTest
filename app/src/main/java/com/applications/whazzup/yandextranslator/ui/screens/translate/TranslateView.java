@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -16,13 +17,16 @@ import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.mvp.views.AbstractView;
 import com.applications.whazzup.yandextranslator.mvp.views.ITranslateView;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.subjects.AsyncSubject;
 
 
-public class TranslateView extends AbstractView<TranslateScreen.Presenter> implements ITranslateView{
+public class TranslateView extends AbstractView<TranslateScreen.Presenter> implements ITranslateView {
 
     @BindView(R.id.lang_txt)
     TextView mLangTxt;
@@ -38,14 +42,43 @@ public class TranslateView extends AbstractView<TranslateScreen.Presenter> imple
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        mTranslateText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mTranslateText.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId== EditorInfo.IME_ACTION_DONE){
-                    Toast.makeText(getContext(), mTranslateText.getText().toString(), Toast.LENGTH_LONG).show();
-                    return true;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            private Timer timer = new Timer();
+            private final long DELAY = 1500; // milliseconds
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!(String.valueOf(s).isEmpty())) {
+                    final Handler handler = new Handler();
+                    timer.cancel();
+                    timer = new Timer();
+                    timer.schedule(
+                            new TimerTask() {
+                                @Override
+                                public void run() {
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mPresenter.clickOnLangBtn();
+                                        }
+                                    });
+                                    // TODO: do what you need here (refresh list)
+                                    // you will probably need to use runOnUiThread(Runnable action) for some specific actions
+                                }
+                            },
+                            DELAY
+                    );
                 }
-                return false;
             }
         });
     }
@@ -66,20 +99,17 @@ public class TranslateView extends AbstractView<TranslateScreen.Presenter> imple
         return mTranslateText.getText().toString();
     }
 
-
-    @OnClick(R.id.lang_btn)
-    void clickOnLangBtn(){
-        mPresenter.clickOnLangBtn();
-    }
-
-    public void setTranslateTest(String text){
+    public void setTranslateTest(String text) {
         mLangTxt.setText(text);
     }
 
+    //region===============================Events==========================
+
     @OnClick(R.id.clear_btn)
-    void onClick(){
+    void onClick() {
         mTranslateText.setText("");
     }
 
+    //endregion
 
 }
