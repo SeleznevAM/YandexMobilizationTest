@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="network_not_available_string">Connection to the network is not available, try to catch up</string>
+</resources>

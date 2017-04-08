@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">YandexTranslator</string>
+    <string name="network_not_available_string">Соединение с сетью недоступно, попробуйте пойзже</string>
 </resources>

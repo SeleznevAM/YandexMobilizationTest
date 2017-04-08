@@ -5,9 +5,6 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,14 +13,13 @@ import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.mvp.views.AbstractView;
 import com.applications.whazzup.yandextranslator.mvp.views.ITranslateView;
+import com.applications.whazzup.yandextranslator.utils.NetworkStatusChecker;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.subjects.AsyncSubject;
 
 
 public class TranslateView extends AbstractView<TranslateScreen.Presenter> implements ITranslateView {
@@ -69,7 +65,11 @@ public class TranslateView extends AbstractView<TranslateScreen.Presenter> imple
                                     handler.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            mPresenter.clickOnLangBtn();
+                                            if(NetworkStatusChecker.isNetworkAvalible(getContext())) {
+                                                mPresenter.clickOnLangBtn();
+                                            }else{
+                                                Toast.makeText(getContext(), R.string.network_not_available_string, Toast.LENGTH_LONG).show();
+                                            }
                                         }
                                     });
                                     // TODO: do what you need here (refresh list)
