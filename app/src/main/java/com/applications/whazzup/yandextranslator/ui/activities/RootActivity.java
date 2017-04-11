@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,7 +31,6 @@ import com.applications.whazzup.yandextranslator.mvp.views.IRootView;
 import com.applications.whazzup.yandextranslator.mvp.views.IView;
 import com.applications.whazzup.yandextranslator.ui.screens.language.LanguageScreen;
 import com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateScreen;
-import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.DetailScreen;
 import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.favorite.FavoriteScreen;
 import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.history.HistoryScreen;
 
@@ -93,7 +90,6 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
                 .dispatcher(new TreeKeyDispatcher(this))
                 .install();
         super.attachBaseContext(newBase);
-
     }
 
     @Override
@@ -115,6 +111,25 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
 
         initToolBar();
         navigation.setOnNavigationItemSelectedListener(this);
+        navigation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                switch (v.getId()){
+                    default: break;
+                }
+            }
+        });
+    }
+
+    public void updateBottomBarState(int actionId) {
+        Menu menu = navigation.getMenu();
+
+        for (int index = 0, size = menu.size(); index < size; index++) {
+            MenuItem item = menu.getItem(index);
+            if (item.getItemId() == actionId) {
+                item.setChecked(true);
+            }
+        }
     }
 
     private void initToolBar() {
@@ -144,19 +159,21 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
         }
     }
 
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
         Object key = null;
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 key = new TranslateScreen();
                 break;
 
-            case R.id.navigation_dashboard:
+            case R.id.navigation_history:
                 key = new HistoryScreen();
                 break;
 
-            case R.id.navigation_notifications:
+            case R.id.navigation_favorite:
                 key = new FavoriteScreen();
                 break;
         }
@@ -225,7 +242,6 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
         }
     }
 
-
     @Nullable
     @Override
     public IView getCurrentScreen() {
@@ -271,7 +287,6 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
             mActionBar.setDisplayHomeAsUpEnabled(false);
         }
     }
-
 
     @Override
     public void directionVisible(boolean isVisible) {

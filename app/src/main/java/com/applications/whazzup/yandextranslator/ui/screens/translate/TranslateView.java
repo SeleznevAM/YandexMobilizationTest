@@ -66,14 +66,12 @@ public class TranslateView extends AbstractView<TranslateScreen.Presenter> imple
                                         @Override
                                         public void run() {
                                             if(NetworkStatusChecker.isNetworkAvalible(getContext())) {
-                                                mPresenter.clickOnLangBtn();
+                                                mPresenter.translateText();
                                             }else{
                                                 Toast.makeText(getContext(), R.string.network_not_available_string, Toast.LENGTH_LONG).show();
                                             }
                                         }
                                     });
-                                    // TODO: do what you need here (refresh list)
-                                    // you will probably need to use runOnUiThread(Runnable action) for some specific actions
                                 }
                             },
                             DELAY

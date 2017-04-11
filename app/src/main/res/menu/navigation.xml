@@ -6,12 +6,12 @@
         android:title="Домой"/>
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_history"
         android:icon="@drawable/ic_bookmark_light_grey_24dp"
         android:title="История"/>
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_favorite"
         android:icon="@drawable/ic_favorite_black_24dp"
         android:title="Избранное"/>
 </menu>

@@ -7,7 +7,7 @@ import io.realm.RealmResults;
 
 public class LanguageModel extends AbstractModel {
 
-    public RealmResults<LangRealm> getAllLang (){
+    public RealmResults<LangRealm> getAllLang() {
         return mDataManager.getRealmManager().getAllLang();
     }
 }

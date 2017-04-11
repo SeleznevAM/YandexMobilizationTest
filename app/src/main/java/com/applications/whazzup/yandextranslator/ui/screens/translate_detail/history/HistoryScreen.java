@@ -71,6 +71,7 @@ public class HistoryScreen extends AbstractScreen<RootActivity.RootComponent> {
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             initActionBar();
+            mRootPresenter.getRootView().updateBottomBarState(R.id.navigation_history);
             mModel.getTranslateHistory().subscribe(new Subscriber<TranslateRealm>() {
                 @Override
                 public void onCompleted() {

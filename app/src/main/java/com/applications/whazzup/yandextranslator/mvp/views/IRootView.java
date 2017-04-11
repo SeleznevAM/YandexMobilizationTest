@@ -10,7 +10,6 @@ public interface IRootView extends IView {
 
     void showError(Throwable e);
 
-
     void showLoad();
 
     void hideLoad();
@@ -21,4 +20,6 @@ public interface IRootView extends IView {
 
     @Nullable
     IView getCurrentScreen();
+
+    void updateBottomBarState(int actionId);
 }

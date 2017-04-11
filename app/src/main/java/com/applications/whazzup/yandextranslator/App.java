@@ -4,24 +4,20 @@ package com.applications.whazzup.yandextranslator;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.di.components.AppComponent;
 import com.applications.whazzup.yandextranslator.di.components.DaggerAppComponent;
 import com.applications.whazzup.yandextranslator.di.modules.AppModule;
 import com.applications.whazzup.yandextranslator.di.modules.RootModule;
-import com.applications.whazzup.yandextranslator.flow.Screen;
 import com.applications.whazzup.yandextranslator.mortar.ScreenScoper;
 import com.applications.whazzup.yandextranslator.ui.activities.DaggerRootActivity_RootComponent;
 import com.applications.whazzup.yandextranslator.ui.activities.RootActivity;
 import com.facebook.stetho.Stetho;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
-
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
-import okhttp3.internal.http.RealInterceptorChain;
+
 
 public class App extends Application {
 
@@ -33,7 +29,7 @@ public class App extends Application {
 
     @Override
     public Object getSystemService(String name) {
-        return (mRootScope!=null && mRootScope.hasService(name)) ? mRootScope.getService(name) : super.getSystemService(name);
+        return (mRootScope != null && mRootScope.hasService(name)) ? mRootScope.getService(name) : super.getSystemService(name);
     }
 
     @Override
@@ -42,12 +38,12 @@ public class App extends Application {
         Realm.init(this);
 
         Stetho.initialize(Stetho.newInitializerBuilder(this)
-        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build()).build());
+                .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build()).build());
         createDaggerAppComponent();
         createRootActivityComponent();
 
-        sSharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
+        sSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         mRootScope = MortarScope.buildRootScope()
                 .withService(DaggerService.SERVICE_NAME, sAppComponent)
@@ -61,13 +57,13 @@ public class App extends Application {
         ScreenScoper.registerScope(mRootActivityScope);
     }
 
-    private void createDaggerAppComponent(){
+    private void createDaggerAppComponent() {
         sAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(getApplicationContext()))
                 .build();
     }
 
-    private void createRootActivityComponent(){
+    private void createRootActivityComponent() {
         rootActivityComponent = DaggerRootActivity_RootComponent.builder()
                 .appComponent(sAppComponent)
                 .rootModule(new RootModule())

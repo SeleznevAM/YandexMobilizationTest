@@ -7,11 +7,11 @@ import io.realm.RealmResults;
 
 public class FavoriteModel extends AbstractModel {
 
-    public RealmResults<FavoriteRealm> getFavorite(){
+    public RealmResults<FavoriteRealm> getFavorite() {
         return mDataManager.getRealmManager().getFavorite();
     }
 
-    public void clearHistory(){
+    public void clearHistory() {
         mDataManager.getRealmManager().clearHistory();
     }
 }

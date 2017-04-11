@@ -83,6 +83,7 @@ public class LanguageScreen extends AbstractScreen<TranslateScreen.Component> im
             getView().initView();
             fillLanguageAdapter();
             initActionBar();
+
         }
 
         private void initActionBar() {

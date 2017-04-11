@@ -117,7 +117,4 @@ public class RootPresenter extends Presenter<IRootView> {
     }
 
     //endregion
-
-
-
 }

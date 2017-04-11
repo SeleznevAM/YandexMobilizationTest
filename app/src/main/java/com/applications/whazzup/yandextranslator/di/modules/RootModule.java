@@ -12,13 +12,13 @@ public class RootModule {
 
     @Provides
     @RootScope
-    RootPresenter provideRootPresenter(){
+    RootPresenter provideRootPresenter() {
         return RootPresenter.getInstance();
     }
 
     @Provides
     @RootScope
-    RootModel provideRootModel(){
+    RootModel provideRootModel() {
         return new RootModel();
     }
 }

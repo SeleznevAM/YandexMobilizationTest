@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context="com.applications.whazzup.yandextranslator.ui.activities.RootActivity">
 
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_layout"
         android:layout_width="match_parent"

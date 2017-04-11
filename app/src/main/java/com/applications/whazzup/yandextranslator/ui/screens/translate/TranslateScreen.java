@@ -80,6 +80,7 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             initActionBar();
+            mRootPresenter.getRootView().updateBottomBarState(R.id.navigation_home);
         }
 
         @Override
@@ -87,7 +88,7 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
             ((Component) scope.getService(DaggerService.SERVICE_NAME)).inject(this);
         }
 
-        public void clickOnLangBtn() {
+        public void translateText() {
             final String direction = mRootPresenter.getLanguageCodeFrom() + "-" + mRootPresenter.getLanguageCodeTo();
             TranslateRealm realm = mModel.getTranslateRealmFromDb(getView().getTranslateText().trim(), direction);
 
@@ -108,7 +109,7 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
 
                     @Override
                     public void onFailure(Call<YandexTranslateRes> call, Throwable t) {
-
+                        getRootView().showError(t);
                     }
                 });
             }else{

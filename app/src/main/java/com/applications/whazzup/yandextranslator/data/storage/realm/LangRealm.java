@@ -7,6 +7,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class LangRealm extends RealmObject implements Comparable {
+
     @PrimaryKey
     private String id;
 

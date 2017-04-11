@@ -1,7 +1,6 @@
 package com.applications.whazzup.yandextranslator.flow;
 
 
-
 import android.app.Activity;
 import android.content.Context;
 
@@ -34,7 +33,7 @@ public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
     @Nullable
     private Object outKey;
 
-    public FrameLayout mRootFrame;
+    private FrameLayout mRootFrame;
 
     public TreeKeyDispatcher(Activity mActivity) {
         this.mActivity = mActivity;
@@ -57,7 +56,7 @@ public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
 
         // TODO: 27.11.2016 create mortar context for screen
         Context flowContext = traversal.createContext(inKey, mActivity);
-        Context mortarContext = ScreenScoper.getScreenScope((AbstractScreen)inKey).createContext(flowContext);
+        Context mortarContext = ScreenScoper.getScreenScope((AbstractScreen) inKey).createContext(flowContext);
         mContexts = Collections.singletonMap(inKey, mortarContext);
         changeKey(outState, inState, traversal.direction, mContexts, callback);
     }
@@ -82,9 +81,9 @@ public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
         if (screen == null) {
             throw new IllegalStateException("@Screen annotation is missing in screen " + ((AbstractScreen) inKey).getClass());
         } else {
-            int layouyt = screen.value();
+            int layout = screen.value();
             LayoutInflater inflater = LayoutInflater.from(context);
-            final View newView = inflater.inflate(layouyt, mRootFrame, false);
+            final View newView = inflater.inflate(layout, mRootFrame, false);
             final View oldView = mRootFrame.getChildAt(0);
 
             /**
@@ -105,7 +104,7 @@ public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
                 mRootFrame.removeView(mRootFrame.getChildAt(0));
             }
             mRootFrame.addView(newView);
-           callback.onTraversalCompleted();
+            callback.onTraversalCompleted();
         }
     }
 }

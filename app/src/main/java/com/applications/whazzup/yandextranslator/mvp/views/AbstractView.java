@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
-public abstract class AbstractView <P extends AbstractPresenter> extends FrameLayout implements IView {
+public abstract class AbstractView<P extends AbstractPresenter> extends FrameLayout implements IView {
 
     @Inject
     protected P mPresenter;
@@ -26,7 +26,7 @@ public abstract class AbstractView <P extends AbstractPresenter> extends FrameLa
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if(!isInEditMode()) {
+        if (!isInEditMode()) {
             mPresenter.takeView(this);
         }
     }
@@ -34,7 +34,7 @@ public abstract class AbstractView <P extends AbstractPresenter> extends FrameLa
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(!isInEditMode()) {
+        if (!isInEditMode()) {
             mPresenter.dropView(this);
         }
     }

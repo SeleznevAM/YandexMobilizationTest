@@ -35,7 +35,7 @@ public class FavoriteView extends AbstractView<FavoriteScreen.FavoritePresenter>
 
     @Override
     public boolean viewOnBackPressed() {
-        return false;
+        return true;
     }
 
     public FavoriteAdapter getAdapter() {

@@ -37,7 +37,6 @@ public class DataManager {
         return ourInstance;
     }
 
-
     private DataManager() {
         DaggerDataManagerComponent.builder()
                 .appComponent(App.getAppComponent())
@@ -45,7 +44,6 @@ public class DataManager {
                 .localModule(new LocalModule())
                 .build().inject(this);
     }
-
 
     public void getAllLag() {
         Call<YandexLangRes> call = mRestService.getAllLang(ConstantManager.API_KEY, Locale.getDefault().getLanguage());

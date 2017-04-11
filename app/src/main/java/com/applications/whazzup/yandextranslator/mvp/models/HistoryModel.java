@@ -7,19 +7,19 @@ import rx.Observable;
 
 public class HistoryModel extends AbstractModel {
 
-    public Observable<TranslateRealm> getTranslateHistory(){
+    public Observable<TranslateRealm> getTranslateHistory() {
         return mDataManager.getRealmManager().getTranslateHistory();
     }
 
-    public void deleteAllHistory(){
+    public void deleteAllHistory() {
         mDataManager.getRealmManager().deleteAllHistory();
     }
 
-    public void saveTranslateToFavorite(TranslateRealm translateRealm){
+    public void saveTranslateToFavorite(TranslateRealm translateRealm) {
         mDataManager.getRealmManager().saveTranslateToFavorite(translateRealm);
     }
 
-    public void deletetTranslateFromFavorite(TranslateRealm translateRealm){
+    public void deletetTranslateFromFavorite(TranslateRealm translateRealm) {
         mDataManager.getRealmManager().deleteTranslateFromFavorite(translateRealm);
     }
 }

@@ -16,22 +16,22 @@ public class PreferencesManager {
         mContext = context;
     }
 
-    public String getLanguageTo(){
+    public String getLanguageTo() {
         return mSharedPreferences.getString(ConstantManager.LANGUAGE_TO, "en");
     }
 
-    public String getLanguageFrom(){
+    public String getLanguageFrom() {
         return mSharedPreferences.getString(ConstantManager.LANGUAGE_FROM, "ru");
     }
 
 
-    public void saveLanguageTo(String language){
+    public void saveLanguageTo(String language) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(ConstantManager.LANGUAGE_TO, language);
         editor.apply();
     }
 
-    public void saveLanguageFrom(String language){
+    public void saveLanguageFrom(String language) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(ConstantManager.LANGUAGE_FROM, language);
         editor.apply();
