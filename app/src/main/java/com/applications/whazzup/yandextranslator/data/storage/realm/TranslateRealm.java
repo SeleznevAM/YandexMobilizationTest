@@ -47,4 +47,8 @@ public class TranslateRealm extends RealmObject {
     public void changeFavorite(){
         setFavorite(!this.isFavorite);
     }
+
+    public String getId() {
+        return id;
+    }
 }

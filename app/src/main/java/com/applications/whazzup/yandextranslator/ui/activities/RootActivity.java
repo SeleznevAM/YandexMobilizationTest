@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.applications.whazzup.yandextranslator.mvp.views.IRootView;
 import com.applications.whazzup.yandextranslator.mvp.views.IView;
 import com.applications.whazzup.yandextranslator.ui.screens.language.LanguageScreen;
 import com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateScreen;
+import com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateView;
 import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.favorite.FavoriteScreen;
 import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.history.HistoryScreen;
 
@@ -121,6 +123,14 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
         });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+       if(getCurrentScreen() instanceof TranslateView){
+           mRootPresenter.saveTranslateHash();
+       }
+    }
+
     public void updateBottomBarState(int actionId) {
         Menu menu = navigation.getMenu();
 
@@ -162,7 +172,6 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         Object key = null;
         switch (item.getItemId()) {
             case R.id.navigation_home:
@@ -227,7 +236,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
             mTranslateTo.setText(language.getLang());
             mRootPresenter.setLanguageCodeTo(language.getId());
         } else {
-            mTranslateTo.setText("Русский");
+            mTranslateTo.setText("Выберите язык");
         }
 
     }
@@ -238,7 +247,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
             mTranslateFrom.setText(language.getLang());
             mRootPresenter.setLanguageCodeFrom(language.getId());
         } else {
-            mTranslateFrom.setText("Английский");
+            mTranslateFrom.setText("Выберите язык");
         }
     }
 

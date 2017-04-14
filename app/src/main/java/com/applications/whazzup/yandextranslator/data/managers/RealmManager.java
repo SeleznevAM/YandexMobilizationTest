@@ -86,14 +86,6 @@ public class RealmManager {
         return mRealmInstance;
     }
 
-    public String getTranslateTextFromBd(String originalText) {
-        if (getQueryRealmInstance().where(TranslateRealm.class).equalTo("originalText", originalText).findFirst() == null) {
-            return null;
-        } else {
-            return getQueryRealmInstance().where(TranslateRealm.class).equalTo("originalText", originalText).findFirst().getTranslateText();
-        }
-    }
-
     public TranslateRealm getTranslateRealmFromDb(String originalText, String direction) {
         return getQueryRealmInstance().where(TranslateRealm.class).equalTo("originalText", originalText).equalTo("direction", direction).findFirst();
     }
@@ -118,6 +110,10 @@ public class RealmManager {
 
     public RealmResults<FavoriteRealm> getFavorite() {
         return getQueryRealmInstance().where(FavoriteRealm.class).findAll();
+    }
+
+    public boolean checkFavorite(String originalText, String direction){
+        return getQueryRealmInstance().where(FavoriteRealm.class).equalTo("originalText", originalText).equalTo("direction", direction).findFirst()!=null ? true : false;
     }
 
     public void deleteAllHistory() {

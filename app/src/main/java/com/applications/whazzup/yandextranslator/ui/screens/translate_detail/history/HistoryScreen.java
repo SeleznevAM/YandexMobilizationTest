@@ -3,7 +3,6 @@ package com.applications.whazzup.yandextranslator.ui.screens.translate_detail.hi
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.data.storage.realm.FavoriteRealm;
@@ -16,7 +15,6 @@ import com.applications.whazzup.yandextranslator.mvp.models.HistoryModel;
 import com.applications.whazzup.yandextranslator.mvp.presenters.AbstractPresenter;
 import com.applications.whazzup.yandextranslator.mvp.presenters.MenuItemHolder;
 import com.applications.whazzup.yandextranslator.ui.activities.RootActivity;
-import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.DetailScreen;
 
 import dagger.Provides;
 import io.realm.Realm;

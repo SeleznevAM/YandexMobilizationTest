@@ -25,4 +25,30 @@ public class TranslateModel extends AbstractModel {
         return mDataManager.getRealmManager().getTranslateRealmFromDb(originalText, direction);
     }
 
+    public void saveTranslateRealmToSharedPrefernces(TranslateRealm translateRealm){
+        mDataManager.getPreferencesManager().saveTranslateRealm(translateRealm);
+    }
+
+    public TranslateRealm getTranslateRealmFromSharedPreferneces(){
+        return mDataManager.getPreferencesManager().loadTranslateRealm();
+    }
+    public boolean checkFavorite(String originalText, String direction){
+        return mDataManager.getRealmManager().checkFavorite(originalText, direction);
+    }
+
+    public void saveTranslateToFavorite(TranslateRealm translateRealm) {
+        mDataManager.getRealmManager().saveTranslateToFavorite(translateRealm);
+    }
+
+    public void deleteTranslateFromFavorite(TranslateRealm translateRealm) {
+        mDataManager.getRealmManager().deleteTranslateFromFavorite(translateRealm);
+    }
+
+    public void saveTranslateHash(TranslateRealm translateRealm){
+        mDataManager.getPreferencesManager().saveTranslateHash(translateRealm);
+    }
+    public String loadTranslateByHash(){
+        return mDataManager.getPreferencesManager().loadTranslateByHash();
+    }
+
 }

@@ -1,27 +1,31 @@
 package com.applications.whazzup.yandextranslator.mvp.presenters;
 
 
+
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 
 import com.applications.whazzup.yandextranslator.App;
+import com.applications.whazzup.yandextranslator.data.storage.realm.TranslateRealm;
 import com.applications.whazzup.yandextranslator.mvp.models.RootModel;
 import com.applications.whazzup.yandextranslator.mvp.views.IRootView;
 import com.applications.whazzup.yandextranslator.ui.activities.RootActivity;
+import com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+
+import mortar.MortarScope;
 import mortar.Presenter;
 import mortar.bundler.BundleService;
 
 public class RootPresenter extends Presenter<IRootView> {
 
     private static RootPresenter ourInstance = null;
-    private String languageCodeTo = "en";
-    private String languageCodeFrom = "ru";
+    private String languageCodeTo;
+    private String languageCodeFrom;
 
     @Inject
     RootModel mRootModel;
@@ -32,6 +36,14 @@ public class RootPresenter extends Presenter<IRootView> {
         }
         return ourInstance;
     }
+
+    @Override
+    protected void onEnterScope(MortarScope scope) {
+        super.onEnterScope(scope);
+        languageCodeTo = mRootModel.getLanguageTo();
+        languageCodeFrom = mRootModel.getLanguageFrom();
+    }
+
 
     private RootPresenter() {
         App.getRootActivityComponent().inject(this);
@@ -52,6 +64,10 @@ public class RootPresenter extends Presenter<IRootView> {
         return this.new ActionBarBuilder();
     }
 
+    public void saveTranslateHash() {
+        TranslateRealm translateRealm = mRootModel.getTranslateRealmFromDb(((TranslateView) getView().getCurrentScreen()).getOriginalText(), languageCodeFrom+"-"+languageCodeTo);
+        mRootModel.saveTranslateHash(translateRealm);
+    }
 
     //region===============================ActionBarBuilder==========================
 
@@ -106,6 +122,7 @@ public class RootPresenter extends Presenter<IRootView> {
 
     public void setLanguageCodeTo(String languageCodeTo) {
         this.languageCodeTo = languageCodeTo;
+        mRootModel.saveLanguageTo(this.languageCodeTo);
     }
 
     public String getLanguageCodeFrom() {
@@ -114,6 +131,7 @@ public class RootPresenter extends Presenter<IRootView> {
 
     public void setLanguageCodeFrom(String languageCodeFrom) {
         this.languageCodeFrom = languageCodeFrom;
+        mRootModel.saveLanguageFrom(this.languageCodeFrom);
     }
 
     //endregion

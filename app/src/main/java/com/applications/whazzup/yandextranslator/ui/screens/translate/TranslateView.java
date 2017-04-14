@@ -5,11 +5,13 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.applications.whazzup.yandextranslator.R;
+import com.applications.whazzup.yandextranslator.data.storage.realm.TranslateRealm;
 import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.mvp.views.AbstractView;
 import com.applications.whazzup.yandextranslator.mvp.views.ITranslateView;
@@ -24,10 +26,12 @@ import butterknife.OnClick;
 
 public class TranslateView extends AbstractView<TranslateScreen.Presenter> implements ITranslateView {
 
-    @BindView(R.id.lang_txt)
+    @BindView(R.id.translate_txt)
     TextView mLangTxt;
-    @BindView(R.id.translate_text_et)
+    @BindView(R.id.original_text_et)
     EditText mTranslateText;
+    @BindView(R.id.translate_screen_favorite_chb)
+    CheckBox mChangeFavorite;
 
 
     public TranslateView(Context context, AttributeSet attrs) {
@@ -66,6 +70,7 @@ public class TranslateView extends AbstractView<TranslateScreen.Presenter> imple
                                         @Override
                                         public void run() {
                                             if(NetworkStatusChecker.isNetworkAvalible(getContext())) {
+                                                mChangeFavorite.setVisibility(GONE);
                                                 mPresenter.translateText();
                                             }else{
                                                 Toast.makeText(getContext(), R.string.network_not_available_string, Toast.LENGTH_LONG).show();
@@ -93,12 +98,22 @@ public class TranslateView extends AbstractView<TranslateScreen.Presenter> imple
     }
 
     @Override
-    public String getTranslateText() {
+    public String getOriginalText() {
         return mTranslateText.getText().toString();
     }
 
-    public void setTranslateTest(String text) {
+    public String getTranslateText(){
+        return mLangTxt.getText().toString();
+    }
+
+    public boolean isFavorite(){
+        return mChangeFavorite.isChecked();
+    }
+
+    public void setTranslateTest(String text, boolean isFavorite) {
         mLangTxt.setText(text);
+        mChangeFavorite.setVisibility(VISIBLE);
+        mChangeFavorite.setChecked(mPresenter.checkFavorite());
     }
 
     //region===============================Events==========================
@@ -106,8 +121,31 @@ public class TranslateView extends AbstractView<TranslateScreen.Presenter> imple
     @OnClick(R.id.clear_btn)
     void onClick() {
         mTranslateText.setText("");
+        mLangTxt.setText("");
+        mChangeFavorite.setVisibility(GONE);
+    }
+
+    @OnClick(R.id.translate_screen_favorite_chb)
+    void onFavoriteClick(){
+        if(mChangeFavorite.isChecked()){
+            mPresenter.saveFavorite();
+        }else{
+            mPresenter.deleteFromFavorite();
+        }
+    }
+
+
+
+    public void initView(TranslateRealm translateRealm) {
+        if(!(translateRealm.getTranslateText().isEmpty())){
+        mTranslateText.setText(translateRealm.getOriginalText());
+        mLangTxt.setText(translateRealm.getTranslateText());
+        mChangeFavorite.setVisibility(VISIBLE);
+        mChangeFavorite.setChecked(mPresenter.checkFavorite());
+        }
     }
 
     //endregion
+
 
 }
