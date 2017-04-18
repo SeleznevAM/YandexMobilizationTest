@@ -25,6 +25,9 @@ import flow.Traversal;
 import flow.TraversalCallback;
 import flow.TreeKey;
 
+/**
+ * Диспетчер экранов Flow
+ */
 public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
     private Activity mActivity;
 
@@ -47,7 +50,7 @@ public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
         State outState = traversal.origin == null ? null : traversal.getState(traversal.origin.top());
         outKey = outState == null ? null : outState.getKey();
 
-        mRootFrame = (FrameLayout) mActivity.findViewById(R.id.root_frame); //Заменить на руутфрейм
+        mRootFrame = (FrameLayout) mActivity.findViewById(R.id.root_frame);
 
         if (inKey.equals(outKey)) {
             callback.onTraversalCompleted();
@@ -65,17 +68,17 @@ public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
     public void changeKey(@Nullable State outgoingState, State incomingState, final Direction direction, Map<Object, Context> incomingContexts, final TraversalCallback callback) {
         Context context = incomingContexts.get(inKey);
 
-        /**
-         * Сохраняем состояние экрана
-         */
+
+         // Сохраняем состояние экрана
+
 
         if (outgoingState != null) {
             outgoingState.save(mRootFrame.getChildAt(0));
         }
 
-        /**
-         * Создаем новый экран
-         */
+
+         // Создаем новый экран
+
         Screen screen;
         screen = inKey.getClass().getAnnotation(Screen.class);
         if (screen == null) {
@@ -86,15 +89,15 @@ public class TreeKeyDispatcher extends KeyChanger implements Dispatcher {
             final View newView = inflater.inflate(layout, mRootFrame, false);
             final View oldView = mRootFrame.getChildAt(0);
 
-            /**
-             * restore state new view
-             */
+
+             //restore state new view
+
 
             incomingState.restore(newView);
             // TODO: 27.11.2016 Unregister screen scope
-            /**
-             * delete old view
-             */
+
+             //delete old view
+
 
             if (outKey != null && !(inKey instanceof TreeKey)) {
                 ((AbstractScreen) outKey).unregisterScope();

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">YandexTranslator</string>
     <string name="network_not_available_string">Соединение с сетью недоступно, попробуйте пойзже</string>
+    <string name="original_text_hint">Введите текст или адрес сайта</string>
+    <string name="clear">Очистить</string>
+    <string name="change_direction_desc">change_direction</string>
 </resources>

@@ -3,7 +3,6 @@ package com.applications.whazzup.yandextranslator.ui.screens.translate;
 import android.os.Bundle;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.applications.whazzup.yandextranslator.R;
 
@@ -89,6 +88,7 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
             if(translateRealm!=null){
             getView().initView(translateRealm);
             }
+            mRootPresenter.getRootView().setBottomNavigationViewVisibility(true);
         }
 
         @Override
@@ -117,15 +117,28 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
                 call.enqueue(new Callback<YandexTranslateRes>() {
                     @Override
                     public void onResponse(Call<YandexTranslateRes> call, Response<YandexTranslateRes> response) {
+                        switch (response.code()){
+                            case 200:
+                                mModel.saveTranslateInHistory(getView().getOriginalText(), response.body().text.get(0), direction, false);
+                                mRootPresenter.setLastDirection(direction);
+                                getView().setTranslateTest(response.body().text.get(0), checkFavorite());
+                                break;
+                            case 404:
 
-                        if(response.code()==200){
-                        mModel.saveTransletInHistory(getView().getOriginalText(), response.body().text.get(0), direction, false);
+                                mRootPresenter.getRootView().showMessage("Превышено суточное ограничение на объем переведенного текста");
+                                break;
+                            case 413:
+                                mRootPresenter.getRootView().showMessage("Превышен максимально допустимый размер текста");
+                                break;
+                            case 422:
+                                mRootPresenter.getRootView().showMessage("Текст не может быть переведен");
+                                break;
+                            default:
+                                if(getView().getOriginalText().length()>0){
+                                    mRootPresenter.getRootView().showMessage("Что то пошло не так повторите попытку пойзже.");
+                                }
 
-                        getView().setTranslateTest(response.body().text.get(0), false);
                         }
-                        else{
-                            Toast.makeText(getView().getContext(), "Что то пошло не так, повторите запрос", Toast.LENGTH_LONG).show();
-                    }
                     }
 
                     @Override
@@ -134,13 +147,18 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
                     }
                 });
             }else{
-                getView().setTranslateTest(realm.getTranslateText(), realm.isFavorite());
+                mRootPresenter.setLastDirection(direction);
+                getView().setTranslateTest(realm.getTranslateText(), checkFavorite());
             }
         }
 
-        public boolean checkFavorite(){
+        boolean checkFavorite(){
             final String direction = mRootPresenter.getLanguageCodeFrom() + "-" + mRootPresenter.getLanguageCodeTo();
-            return mModel.checkFavorite(getView().getOriginalText().trim(), direction);
+            if(direction.equals(mRootPresenter.getLastDirection())){
+            return mModel.checkFavorite(getView().getOriginalText().trim(), mRootPresenter.getLastDirection());
+            }else{
+                return mModel.checkFavorite(getView().getOriginalText().trim(), direction);
+            }
         }
 
         private void initActionBar(){
@@ -149,15 +167,25 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
            mRootPresenter.getRootView().setLanFrom(mModel.getLangByCode(mRootPresenter.getLanguageCodeFrom()));
         }
 
-        public void saveFavorite() {
+        void saveFavorite() {
             final String direction = mRootPresenter.getLanguageCodeFrom() + "-" + mRootPresenter.getLanguageCodeTo();
-            TranslateRealm realm = mModel.getTranslateRealmFromDb(getView().getOriginalText().trim(), direction);
+            TranslateRealm realm;
+            if(direction.equals(mRootPresenter.getLastDirection())){
+                realm = mModel.getTranslateRealmFromDb(getView().getOriginalText().trim(),direction);
+            }else{
+                realm = mModel.getTranslateRealmFromDb(getView().getOriginalText().trim(), mRootPresenter.getLastDirection());
+            }
             mModel.saveTranslateToFavorite(realm);
         }
 
-        public void deleteFromFavorite() {
+        void deleteFromFavorite() {
             final String direction = mRootPresenter.getLanguageCodeFrom() + "-" + mRootPresenter.getLanguageCodeTo();
-            TranslateRealm realm = mModel.getTranslateRealmFromDb(getView().getOriginalText().trim(), direction);
+            TranslateRealm realm;
+            if(direction.equals(mRootPresenter.getLastDirection())){
+                realm = mModel.getTranslateRealmFromDb(getView().getOriginalText().trim(),direction);
+            }else{
+                realm = mModel.getTranslateRealmFromDb(getView().getOriginalText().trim(), mRootPresenter.getLastDirection());
+            }
             mModel.deleteTranslateFromFavorite(realm);
         }
     }

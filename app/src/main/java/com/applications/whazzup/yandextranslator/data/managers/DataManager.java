@@ -19,9 +19,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Класс для взаимодействия в Rest и SharedPreferences
+ */
 public class DataManager {
 
-    private static DataManager ourInstance = null;
+    private static DataManager ourInstance;
 
     @Inject
     RestService mRestService;
@@ -45,7 +48,7 @@ public class DataManager {
                 .build().inject(this);
     }
 
-    public void getAllLag() {
+    public void getAllLang() {
         Call<YandexLangRes> call = mRestService.getAllLang(ConstantManager.API_KEY, Locale.getDefault().getLanguage());
         call.enqueue(new Callback<YandexLangRes>() {
             @Override

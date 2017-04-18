@@ -1,4 +1,4 @@
-package com.applications.whazzup.yandextranslator.ui.screens.translate_detail.history;
+package com.applications.whazzup.yandextranslator.ui.screens.history;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,15 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.Toast;
 
 import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.mvp.views.AbstractView;
-import com.applications.whazzup.yandextranslator.ui.screens.language.LanguageAdapter;
+import com.applications.whazzup.yandextranslator.ui.screens.history.HistoryAdapter;
+import com.applications.whazzup.yandextranslator.ui.screens.history.HistoryScreen;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 
 public class HistoryView extends AbstractView<HistoryScreen.HistoryPresenter> {

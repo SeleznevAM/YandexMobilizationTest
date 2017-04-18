@@ -1,6 +1,5 @@
 package com.applications.whazzup.yandextranslator.data.managers;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.applications.whazzup.yandextranslator.App;
@@ -11,11 +10,10 @@ import com.google.gson.Gson;
 public class PreferencesManager {
 
     private SharedPreferences mSharedPreferences;
-    private Context mContext;
 
-    public PreferencesManager(Context context) {
+    public PreferencesManager() {
         this.mSharedPreferences = App.getSharedPreferences();
-        mContext = context;
+
     }
 
     public String getLanguageTo() {
@@ -44,7 +42,7 @@ public class PreferencesManager {
         Gson gson = new Gson();
         String json = gson.toJson(translateRealm);
         editor.putString(ConstantManager.TRANSLATE_REALM, json);
-        editor.commit();
+        editor.apply();
     }
 
     public TranslateRealm loadTranslateRealm(){
@@ -57,7 +55,7 @@ public class PreferencesManager {
         if(translateRealm!=null) {
             SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.putString("TRANSLATE_HASH", translateRealm.getId());
-            editor.commit();
+            editor.apply();
         }
     }
 

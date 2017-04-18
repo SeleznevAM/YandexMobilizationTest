@@ -17,7 +17,7 @@ public class TranslateModel extends AbstractModel {
         return mDataManager.getRealmManager().getLangByCode(code);
     }
 
-    public void saveTransletInHistory(String originalText, String translateText, String direction, boolean isFavorite) {
+    public void saveTranslateInHistory(String originalText, String translateText, String direction, boolean isFavorite) {
         mDataManager.getRealmManager().saveTranslateInHistory(originalText, translateText, direction, isFavorite);
     }
 
@@ -25,13 +25,6 @@ public class TranslateModel extends AbstractModel {
         return mDataManager.getRealmManager().getTranslateRealmFromDb(originalText, direction);
     }
 
-    public void saveTranslateRealmToSharedPrefernces(TranslateRealm translateRealm){
-        mDataManager.getPreferencesManager().saveTranslateRealm(translateRealm);
-    }
-
-    public TranslateRealm getTranslateRealmFromSharedPreferneces(){
-        return mDataManager.getPreferencesManager().loadTranslateRealm();
-    }
     public boolean checkFavorite(String originalText, String direction){
         return mDataManager.getRealmManager().checkFavorite(originalText, direction);
     }

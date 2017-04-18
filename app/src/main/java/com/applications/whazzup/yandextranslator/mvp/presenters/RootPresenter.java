@@ -17,6 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 
+import io.realm.Realm;
 import mortar.MortarScope;
 import mortar.Presenter;
 import mortar.bundler.BundleService;
@@ -26,6 +27,7 @@ public class RootPresenter extends Presenter<IRootView> {
     private static RootPresenter ourInstance = null;
     private String languageCodeTo;
     private String languageCodeFrom;
+    private String lastDirection;
 
     @Inject
     RootModel mRootModel;
@@ -37,11 +39,22 @@ public class RootPresenter extends Presenter<IRootView> {
         return ourInstance;
     }
 
+    /*
+    Данный метод отрабатывает самым первым при загрузке Рут Активити, еще до момента отображения наэкране.
+    Здесь мы получаем коды языков направления перевод из ШП, а так же получив последний сохраненный перевод, сохраняем поледне направление перевода,
+    так как выставленные коды и направление перевода сохранненного текста могут различаться.
+     */
+
     @Override
     protected void onEnterScope(MortarScope scope) {
         super.onEnterScope(scope);
         languageCodeTo = mRootModel.getLanguageTo();
         languageCodeFrom = mRootModel.getLanguageFrom();
+        Realm realm = Realm.getDefaultInstance();
+        TranslateRealm translateRealm =  realm.where(TranslateRealm.class).equalTo("id", mRootModel.loadTranslateByHash()).findFirst();
+        if(translateRealm!=null) {
+            lastDirection =translateRealm.getDirection();
+        }
     }
 
 
@@ -64,13 +77,22 @@ public class RootPresenter extends Presenter<IRootView> {
         return this.new ActionBarBuilder();
     }
 
+    /*
+    Сохраняем id(hashCode) перевода в ШП
+     */
     public void saveTranslateHash() {
-        TranslateRealm translateRealm = mRootModel.getTranslateRealmFromDb(((TranslateView) getView().getCurrentScreen()).getOriginalText(), languageCodeFrom+"-"+languageCodeTo);
-        mRootModel.saveTranslateHash(translateRealm);
+        if(getView().getCurrentScreen()!=null) {
+            TranslateRealm translateRealm = mRootModel.getTranslateRealmFromDb(((TranslateView) getView().getCurrentScreen()).getOriginalText(), languageCodeFrom + "-" + languageCodeTo);
+            mRootModel.saveTranslateHash(translateRealm);
+        }
+
     }
 
     //region===============================ActionBarBuilder==========================
 
+    /**
+     * Класс для формирования и отображения различных ActionBar на различных скринах
+     */
    public class ActionBarBuilder {
 
         private boolean isGoBack;
@@ -132,6 +154,14 @@ public class RootPresenter extends Presenter<IRootView> {
     public void setLanguageCodeFrom(String languageCodeFrom) {
         this.languageCodeFrom = languageCodeFrom;
         mRootModel.saveLanguageFrom(this.languageCodeFrom);
+    }
+
+    public String getLastDirection() {
+        return lastDirection;
+    }
+
+    public void setLastDirection(String lastDirection) {
+        this.lastDirection = lastDirection;
     }
 
     //endregion

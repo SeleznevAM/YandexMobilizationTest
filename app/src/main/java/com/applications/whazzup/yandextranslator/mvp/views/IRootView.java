@@ -10,9 +10,7 @@ public interface IRootView extends IView {
 
     void showError(Throwable e);
 
-    void showLoad();
-
-    void hideLoad();
+    void setBottomNavigationViewVisibility(boolean isVisible);
 
     void setLanTo(LangRealm language);
 

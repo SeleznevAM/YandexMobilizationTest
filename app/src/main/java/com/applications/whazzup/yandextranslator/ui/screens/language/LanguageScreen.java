@@ -83,6 +83,7 @@ public class LanguageScreen extends AbstractScreen<TranslateScreen.Component> im
             getView().initView();
             fillLanguageAdapter();
             initActionBar();
+            mRootPresenter.getRootView().setBottomNavigationViewVisibility(false);
 
         }
 
@@ -97,7 +98,7 @@ public class LanguageScreen extends AbstractScreen<TranslateScreen.Component> im
         }
 
 
-        public void selectLang(LangRealm language) {
+        void selectLang(LangRealm language) {
             if(direction==1){
                getRootView().setLanFrom(language);
                 mRootPresenter.setLanguageCodeFrom(language.getId());

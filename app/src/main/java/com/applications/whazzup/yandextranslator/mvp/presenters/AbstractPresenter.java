@@ -12,6 +12,9 @@ import javax.inject.Inject;
 import mortar.MortarScope;
 import mortar.ViewPresenter;
 
+/**
+ * Класс родитель для всех Presenter.
+ */
 public abstract class AbstractPresenter<V extends AbstractView, M extends AbstractModel> extends ViewPresenter<V> {
 
     private final String TAG = this.getClass().getSimpleName();

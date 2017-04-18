@@ -10,6 +10,9 @@ import io.realm.RealmResults;
 import rx.Observable;
 import rx.functions.Func1;
 
+/**
+ * Класс для работы с Realm
+ */
 public class RealmManager {
     private Realm mRealmInstance = null;
 
@@ -48,28 +51,28 @@ public class RealmManager {
     public void saveTranslateToFavorite(final TranslateRealm translateRealm) {
         Realm realm = Realm.getDefaultInstance();
         final FavoriteRealm favoriteRealm = new FavoriteRealm(translateRealm);
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                translateRealm.changeFavorite();
-                realm.insertOrUpdate(favoriteRealm);
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    translateRealm.changeFavorite();
+                    realm.insertOrUpdate(favoriteRealm);
 
-            }
-        });
+                }
+            });
         realm.close();
     }
 
     public void deleteTranslateFromFavorite(final TranslateRealm translateRealm) {
         Realm realm = Realm.getDefaultInstance();
         final FavoriteRealm favoriteRealm = new FavoriteRealm(translateRealm);
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                translateRealm.changeFavorite();
-                realm.where(FavoriteRealm.class).equalTo("originalText", favoriteRealm.getOriginalText()).equalTo("translateText", favoriteRealm.getTranslateText()).findFirst().deleteFromRealm();
 
-            }
-        });
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    translateRealm.changeFavorite();
+                    realm.where(FavoriteRealm.class).equalTo("originalText", favoriteRealm.getOriginalText()).equalTo("translateText", favoriteRealm.getTranslateText()).findFirst().deleteFromRealm();
+                }
+            });
         realm.close();
     }
 

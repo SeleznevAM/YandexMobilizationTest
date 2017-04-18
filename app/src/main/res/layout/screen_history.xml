@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.applications.whazzup.yandextranslator.ui.screens.translate_detail.history.HistoryView xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<com.applications.whazzup.yandextranslator.ui.screens.history.HistoryView xmlns:android="http://schemas.android.com/apk/res/android"
+                                                                          android:orientation="vertical"
+                                                                          android:layout_width="match_parent"
+                                                                          android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/history_recycler"
@@ -10,4 +10,4 @@
         android:layout_height="match_parent"
         android:layout_margin="8dp"/>
 
-</com.applications.whazzup.yandextranslator.ui.screens.translate_detail.history.HistoryView>
+</com.applications.whazzup.yandextranslator.ui.screens.history.HistoryView>

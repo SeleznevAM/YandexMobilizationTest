@@ -6,18 +6,19 @@ import com.applications.whazzup.yandextranslator.data.storage.realm.TranslateRea
 public class RootModel extends AbstractModel {
 
     public void getAllLang() {
-        mDataManager.getAllLag();
+        mDataManager.getAllLang();
     }
 
-    public void saveTranslateToSharedPreferences(TranslateRealm realm){
-        mDataManager.getPreferencesManager().saveTranslateRealm(realm);
-    }
     public TranslateRealm getTranslateRealmFromDb(String originalText, String direction) {
         return mDataManager.getRealmManager().getTranslateRealmFromDb(originalText, direction);
     }
 
     public void saveTranslateHash(TranslateRealm translateRealm){
         mDataManager.getPreferencesManager().saveTranslateHash(translateRealm);
+    }
+
+    public String loadTranslateByHash(){
+        return mDataManager.getPreferencesManager().loadTranslateByHash();
     }
 
     public void saveLanguageTo(String language){

@@ -1,4 +1,4 @@
-package com.applications.whazzup.yandextranslator.ui.screens.translate_detail.favorite;
+package com.applications.whazzup.yandextranslator.ui.screens.favorite;
 
 
 import android.content.Context;

@@ -3,7 +3,6 @@ package com.applications.whazzup.yandextranslator.mvp.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import com.applications.whazzup.yandextranslator.mvp.presenters.AbstractPresenter;
 

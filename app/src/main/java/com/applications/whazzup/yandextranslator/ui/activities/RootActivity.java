@@ -4,19 +4,20 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.data.storage.realm.LangRealm;
@@ -33,8 +34,8 @@ import com.applications.whazzup.yandextranslator.mvp.views.IView;
 import com.applications.whazzup.yandextranslator.ui.screens.language.LanguageScreen;
 import com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateScreen;
 import com.applications.whazzup.yandextranslator.ui.screens.translate.TranslateView;
-import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.favorite.FavoriteScreen;
-import com.applications.whazzup.yandextranslator.ui.screens.translate_detail.history.HistoryScreen;
+import com.applications.whazzup.yandextranslator.ui.screens.favorite.FavoriteScreen;
+import com.applications.whazzup.yandextranslator.ui.screens.history.HistoryScreen;
 
 
 import java.util.List;
@@ -76,6 +77,9 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
 
     @BindView(R.id.direction_wrapper)
     LinearLayout mDirectionWrapper;
+
+    @BindView(R.id.root_container)
+    CoordinatorLayout mRootContainer;
 
     ActionBar mActionBar;
     private List<MenuItemHolder> mActionBarMenuItems;
@@ -145,7 +149,9 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
     private void initToolBar() {
         setSupportActionBar(mToolBar);
         mActionBar = getSupportActionBar();
+        if(mActionBar!=null){
         mActionBar.setTitle("");
+        }
     }
 
     @Override
@@ -164,8 +170,6 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
     public void onBackPressed() {
         if (getCurrentScreen() != null && !viewOnBackPressed() && !Flow.get(this).goBack()) {
             super.onBackPressed();
-        } else {
-
         }
     }
 
@@ -212,22 +216,21 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Snackbar.make(mRootContainer, message, BaseTransientBottomBar.LENGTH_LONG).show();
     }
 
     @Override
     public void showError(Throwable e) {
-
+        Snackbar.make(mRootContainer, e.toString(), BaseTransientBottomBar.LENGTH_LONG).show();
     }
 
     @Override
-    public void showLoad() {
-
-    }
-
-    @Override
-    public void hideLoad() {
-
+    public void setBottomNavigationViewVisibility(boolean isVisible) {
+        if(isVisible){
+            navigation.setVisibility(View.VISIBLE);
+        }else{
+            navigation.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -282,6 +285,9 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
         mTranslateFrom.setText(to);
         mRootPresenter.setLanguageCodeTo(codeFrom);
         mRootPresenter.setLanguageCodeFrom(codeTo);
+        if(getCurrentScreen()!=null) {
+            ((TranslateView) getCurrentScreen()).getPresenter().translateText();
+        }
     }
     //endregion
 

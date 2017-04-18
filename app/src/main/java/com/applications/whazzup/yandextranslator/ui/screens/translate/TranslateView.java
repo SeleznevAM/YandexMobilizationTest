@@ -81,6 +81,9 @@ public class TranslateView extends AbstractView<TranslateScreen.Presenter> imple
                             },
                             DELAY
                     );
+                }else{
+                    mLangTxt.setText("");
+                    mChangeFavorite.setVisibility(GONE);
                 }
             }
         });
@@ -110,10 +113,16 @@ public class TranslateView extends AbstractView<TranslateScreen.Presenter> imple
         return mChangeFavorite.isChecked();
     }
 
-    public void setTranslateTest(String text, boolean isFavorite) {
+    public void setTranslateTest(String text) {
         mLangTxt.setText(text);
         mChangeFavorite.setVisibility(VISIBLE);
         mChangeFavorite.setChecked(mPresenter.checkFavorite());
+    }
+
+    public void setTranslateTest(String text, boolean isFavorite) {
+        mLangTxt.setText(text);
+        mChangeFavorite.setVisibility(VISIBLE);
+        mChangeFavorite.setChecked(isFavorite);
     }
 
     //region===============================Events==========================
@@ -146,6 +155,8 @@ public class TranslateView extends AbstractView<TranslateScreen.Presenter> imple
     }
 
     //endregion
-
+public TranslateScreen.Presenter getPresenter(){
+        return mPresenter;
+    }
 
 }

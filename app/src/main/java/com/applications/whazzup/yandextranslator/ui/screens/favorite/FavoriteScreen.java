@@ -1,4 +1,4 @@
-package com.applications.whazzup.yandextranslator.ui.screens.translate_detail.favorite;
+package com.applications.whazzup.yandextranslator.ui.screens.favorite;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -31,7 +31,7 @@ public class FavoriteScreen extends AbstractScreen<RootActivity.RootComponent> {
     //region===============================DI==========================
 
     @dagger.Module
-    public class FavoriteModule{
+    class FavoriteModule{
 
         @Provides
         @FavoriteScope
@@ -48,7 +48,7 @@ public class FavoriteScreen extends AbstractScreen<RootActivity.RootComponent> {
 
     @dagger.Component(dependencies = RootActivity.RootComponent.class, modules = FavoriteModule.class)
     @FavoriteScope
-    public interface FavoriteComponent{
+    interface FavoriteComponent{
         void inject (FavoritePresenter presenter);
         void inject (FavoriteView view);
     }
@@ -58,10 +58,10 @@ public class FavoriteScreen extends AbstractScreen<RootActivity.RootComponent> {
 
     //region===============================Presenter==========================
 
-    public class FavoritePresenter extends AbstractPresenter<FavoriteView, FavoriteModel>{
+    class FavoritePresenter extends AbstractPresenter<FavoriteView, FavoriteModel>{
 
 
-        public FavoritePresenter() {
+        FavoritePresenter() {
 
         }
 
@@ -76,9 +76,10 @@ public class FavoriteScreen extends AbstractScreen<RootActivity.RootComponent> {
             saveFavoriteToAdapter();
             initActionBar();
             getView().initView();
+            mRootPresenter.getRootView().setBottomNavigationViewVisibility(true);
         }
 
-        public void saveFavoriteToAdapter(){
+        void saveFavoriteToAdapter(){
             for(FavoriteRealm realm : mModel.getFavorite()){
                 getView().getAdapter().addItem(realm);
             }
@@ -94,7 +95,7 @@ public class FavoriteScreen extends AbstractScreen<RootActivity.RootComponent> {
             })).build();
         }
 
-        public void clickFavorite(final FavoriteRealm favoriteFromPosition) {
+        void clickFavorite(final FavoriteRealm favoriteFromPosition) {
             Realm realm = Realm.getDefaultInstance();
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
@@ -112,7 +113,7 @@ public class FavoriteScreen extends AbstractScreen<RootActivity.RootComponent> {
             realm.close();
         }
 
-        public void clearHistory(){
+        void clearHistory(){
             mModel.clearHistory();
             getView().getAdapter().clearFavorite();
         }

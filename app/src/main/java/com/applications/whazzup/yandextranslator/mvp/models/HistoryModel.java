@@ -19,7 +19,11 @@ public class HistoryModel extends AbstractModel {
         mDataManager.getRealmManager().saveTranslateToFavorite(translateRealm);
     }
 
-    public void deletetTranslateFromFavorite(TranslateRealm translateRealm) {
+    public void deleteTranslateFromFavorite(TranslateRealm translateRealm) {
         mDataManager.getRealmManager().deleteTranslateFromFavorite(translateRealm);
+    }
+
+    public boolean checkFavorite(String originalText, String direction){
+        return mDataManager.getRealmManager().checkFavorite(originalText, direction);
     }
 }

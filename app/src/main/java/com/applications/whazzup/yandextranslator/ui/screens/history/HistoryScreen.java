@@ -1,11 +1,11 @@
-package com.applications.whazzup.yandextranslator.ui.screens.translate_detail.history;
+package com.applications.whazzup.yandextranslator.ui.screens.history;
 
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.applications.whazzup.yandextranslator.R;
-import com.applications.whazzup.yandextranslator.data.storage.realm.FavoriteRealm;
+
 import com.applications.whazzup.yandextranslator.data.storage.realm.TranslateRealm;
 import com.applications.whazzup.yandextranslator.di.DaggerService;
 import com.applications.whazzup.yandextranslator.di.scopes.HistoryScope;
@@ -31,7 +31,7 @@ public class HistoryScreen extends AbstractScreen<RootActivity.RootComponent> {
     //region===============================DI==========================
 
     @dagger.Module
-    public class HistoryModule{
+    class HistoryModule{
         @Provides
         @HistoryScope
         HistoryPresenter provideHistoryPresenter(){
@@ -47,7 +47,7 @@ public class HistoryScreen extends AbstractScreen<RootActivity.RootComponent> {
 
     @dagger.Component(dependencies = RootActivity.RootComponent.class, modules = HistoryModule.class)
     @HistoryScope
-    public interface HistoryComponent{
+    interface HistoryComponent{
 
         void inject(HistoryPresenter presenter);
         void inject(HistoryView view);
@@ -58,7 +58,7 @@ public class HistoryScreen extends AbstractScreen<RootActivity.RootComponent> {
 
     //region===============================Presenter==========================
 
-    public class HistoryPresenter extends AbstractPresenter<HistoryView, HistoryModel>{
+    class HistoryPresenter extends AbstractPresenter<HistoryView, HistoryModel>{
 
         @Override
         protected void initDagger(MortarScope scope) {
@@ -69,7 +69,9 @@ public class HistoryScreen extends AbstractScreen<RootActivity.RootComponent> {
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             initActionBar();
+            if(getRootView()!=null){
             mRootPresenter.getRootView().updateBottomBarState(R.id.navigation_history);
+            }
             mModel.getTranslateHistory().subscribe(new Subscriber<TranslateRealm>() {
                 @Override
                 public void onCompleted() {
@@ -87,28 +89,17 @@ public class HistoryScreen extends AbstractScreen<RootActivity.RootComponent> {
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
-                            if(realm.where(FavoriteRealm.class).equalTo("originalText", translateRealm.getOriginalText()).equalTo("translateText", translateRealm.getTranslateText()).findFirst()!=null)
-                                translateRealm.setFavorite(true);
+                            translateRealm.setFavorite(mModel.checkFavorite(translateRealm.getOriginalText(), translateRealm.getDirection()));
                         }
                     });
                     getView().getAdapter().addItem(translateRealm);
                 }
             });
+            mRootPresenter.getRootView().setBottomNavigationViewVisibility(true);
         }
 
-
-        public void clickFavorite(final TranslateRealm translateFromPosition) {
-
+        void clickFavorite(final TranslateRealm translateFromPosition) {
             mModel.saveTranslateToFavorite(translateFromPosition);
-
-          /*  Realm realm = Realm.getDefaultInstance();
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    translateFromPosition.changeFavorite();
-                }
-            });
-            realm.close();*/
         }
 
         private void initActionBar(){
@@ -122,11 +113,11 @@ public class HistoryScreen extends AbstractScreen<RootActivity.RootComponent> {
             })).build();
         }
 
-        public void deleteFromFavorite(TranslateRealm translateFromPostition) {
-            mModel.deletetTranslateFromFavorite(translateFromPostition);
+        void deleteFromFavorite(TranslateRealm translateFromPostition) {
+            mModel.deleteTranslateFromFavorite(translateFromPostition);
         }
 
-        public void clearHistory(){
+        void clearHistory(){
              mModel.deleteAllHistory();
             getView().getAdapter().clearHistory();
         }

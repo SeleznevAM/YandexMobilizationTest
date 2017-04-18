@@ -1,4 +1,4 @@
-package com.applications.whazzup.yandextranslator.ui.screens.translate_detail.favorite;
+package com.applications.whazzup.yandextranslator.ui.screens.favorite;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.data.storage.realm.FavoriteRealm;
-import com.applications.whazzup.yandextranslator.data.storage.realm.TranslateRealm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +17,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
+class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
 
-    List<FavoriteRealm> list = new ArrayList<>();
-    CustomClickListener mListener;
+    private List<FavoriteRealm> list = new ArrayList<>();
+    private CustomClickListener mListener;
 
-    public FavoriteAdapter(CustomClickListener listener) {
+    FavoriteAdapter(CustomClickListener listener) {
         mListener = listener;
     }
 
@@ -32,22 +31,22 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         mListener = listener;
     }
 
-    public void addItem(FavoriteRealm item){
+    void addItem(FavoriteRealm item){
         list.add(item);
         notifyDataSetChanged();
     }
 
 
-    public void deleteItem(int position){
+    void deleteItem(int position){
         list.remove(position);
         notifyDataSetChanged();
     }
 
-    public FavoriteRealm getFavoriteFromPosition(int position){
+    FavoriteRealm getFavoriteFromPosition(int position){
         return list.get(position);
     }
 
-    public void clearFavorite(){
+    void clearFavorite(){
         list.clear();
         notifyDataSetChanged();
     }
@@ -76,7 +75,8 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.favorite_cbx)
         CheckBox isFavoriteCheckBox;
@@ -87,7 +87,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         @BindView(R.id.direction_txt)
         TextView mDirection;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             isFavoriteCheckBox.setOnClickListener(this);
@@ -101,7 +101,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         }
     }
 
-    public interface CustomClickListener{
+    interface CustomClickListener{
         void clickOnFavorite(int position);
     }
 }

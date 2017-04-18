@@ -1,4 +1,4 @@
-package com.applications.whazzup.yandextranslator.ui.screens.translate_detail.history;
+package com.applications.whazzup.yandextranslator.ui.screens.history;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,9 +9,6 @@ import android.widget.TextView;
 
 import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.data.storage.realm.TranslateRealm;
-import com.applications.whazzup.yandextranslator.ui.screens.language.LanguageAdapter;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +16,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
+class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 
     private List<TranslateRealm> list = new ArrayList<>();
     private onHistoryClickListener mListener;
 
-    public HistoryAdapter(onHistoryClickListener listener) {
+    HistoryAdapter(onHistoryClickListener listener) {
         mListener = listener;
     }
 
@@ -34,7 +31,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         return new ViewHolder(v);
     }
 
-    public void addItem(TranslateRealm translateRealm){
+    void addItem(TranslateRealm translateRealm){
         list.add(translateRealm);
         notifyDataSetChanged();
     }
@@ -49,7 +46,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     }
 
-    public TranslateRealm getTranslateFromPostition(int position){
+    TranslateRealm getTranslateFromPostition(int position){
         return list.get(position);
     }
 
@@ -58,12 +55,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         return list.size();
     }
 
-    public void clearHistory() {
+    void clearHistory() {
         list.clear();
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.favorite_cbx)
         CheckBox isFacoriteCheckBox;
@@ -74,7 +71,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         @BindView(R.id.direction_txt)
         TextView mDirection;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
             isFacoriteCheckBox.setOnClickListener(this);
@@ -88,7 +85,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
     }
 
-    public interface onHistoryClickListener{
+    interface onHistoryClickListener{
         void onHistoryItemClick(int position, View v);
     }
 }
