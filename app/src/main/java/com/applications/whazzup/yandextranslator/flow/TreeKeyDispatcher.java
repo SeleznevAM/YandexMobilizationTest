@@ -1,6 +1,5 @@
 package com.applications.whazzup.yandextranslator.flow;
 
-
 import android.app.Activity;
 import android.content.Context;
 
@@ -12,7 +11,6 @@ import android.widget.FrameLayout;
 
 import com.applications.whazzup.yandextranslator.R;
 import com.applications.whazzup.yandextranslator.mortar.ScreenScoper;
-
 
 import java.util.Collections;
 import java.util.Map;
