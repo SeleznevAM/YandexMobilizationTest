@@ -3,5 +3,11 @@
     <string name="network_not_available_string">Соединение с сетью недоступно, попробуйте пойзже</string>
     <string name="original_text_hint">Введите текст или адрес сайта</string>
     <string name="clear">Очистить</string>
-    <string name="change_direction_desc">change_direction</string>
+    <string name="change_direction_desc">Изменить направление перевода</string>
+    <string name="choose_lang">Выберите язык</string>
+    <string name="clear_favorite_alert_dialog_hint">Вы уверены, что хотите очистить избранное?</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
+    <string name="clear_history_alert_dialog_hint">Вы уверены, что хотите очистить историю?</string>
+    <string name="language_of_translation_action_bar_hint">Язык перевода</string>
 </resources>

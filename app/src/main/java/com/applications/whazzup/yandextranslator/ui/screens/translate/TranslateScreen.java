@@ -75,7 +75,6 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
 
         @Inject
         RootPresenter mRootPresenter;
-        //final String direction = mRootPresenter.getLanguageCodeFrom() + "-" + mRootPresenter.getLanguageCodeTo();
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
@@ -83,7 +82,6 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
             initActionBar();
             mRootPresenter.getRootView().updateBottomBarState(R.id.navigation_home);
             Realm realm = Realm.getDefaultInstance();
-            //TranslateRealm translateRealm =  mModel.getTranslateRealmFromSharedPreferneces();
             TranslateRealm translateRealm = realm.where(TranslateRealm.class).equalTo("id", mModel.loadTranslateByHash()).findFirst();
             if(translateRealm!=null){
             getView().initView(translateRealm);
@@ -96,7 +94,6 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
             super.onExitScope();
             Log.e("OnExitScope", "ON_EXIT_SCOPE");
             final String direction = mRootPresenter.getLanguageCodeFrom() + "-" + mRootPresenter.getLanguageCodeTo();
-            //mModel.saveTranslateRealmToSharedPrefernces(new TranslateRealm(getView().getOriginalText(), getView().getTranslateText(), direction, getView().isFavorite()));
             if(getView()!=null) {
                 mModel.saveTranslateHash(mModel.getTranslateRealmFromDb(getView().getOriginalText(), direction));
             }
@@ -121,10 +118,11 @@ public class TranslateScreen extends AbstractScreen<RootActivity.RootComponent> 
                             case 200:
                                 mModel.saveTranslateInHistory(getView().getOriginalText(), response.body().text.get(0), direction, false);
                                 mRootPresenter.setLastDirection(direction);
-                                getView().setTranslateTest(response.body().text.get(0), checkFavorite());
+                                if(response.body().text.get(0)!=null) {
+                                    getView().setTranslateTest(response.body().text.get(0), checkFavorite());
+                                }
                                 break;
                             case 404:
-
                                 mRootPresenter.getRootView().showMessage("Превышено суточное ограничение на объем переведенного текста");
                                 break;
                             case 413:

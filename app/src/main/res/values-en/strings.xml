@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="network_not_available_string">Connection to the network is not available, try to catch up</string>
+    <string name="original_text_hint">Type text or a website address</string>
+    <string name="clear">Clear</string>
+    <string name="change_direction_desc">change_direction</string>
+    <string name="choose_lang">Select the language</string>
+    <string name="clear_favorite_alert_dialog_hint">Are you sure you want to clear your favorites?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="clear_history_alert_dialog_hint">Are you sure you want to clear history?</string>
+    <string name="language_of_translation_action_bar_hint">Language of translation</string>
 </resources>

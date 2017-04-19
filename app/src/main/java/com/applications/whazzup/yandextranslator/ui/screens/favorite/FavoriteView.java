@@ -55,15 +55,15 @@ public class FavoriteView extends AbstractView<FavoriteScreen.FavoritePresenter>
 
     public void showAlertDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Вы уверены, что хотите очистить избранное?");
+        builder.setTitle(R.string.clear_favorite_alert_dialog_hint);
         builder.setCancelable(true);
-        builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
-        builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mPresenter.clearHistory();

@@ -89,6 +89,7 @@ public class LanguageScreen extends AbstractScreen<TranslateScreen.Component> im
 
         private void initActionBar() {
           mRootPresenter.newActionBarBuilder().setBackArrow(true).setTitle("Язык перевода").build();
+
         }
 
         private void fillLanguageAdapter(){

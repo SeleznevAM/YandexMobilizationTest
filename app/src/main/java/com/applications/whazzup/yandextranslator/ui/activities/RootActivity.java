@@ -239,7 +239,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
             mTranslateTo.setText(language.getLang());
             mRootPresenter.setLanguageCodeTo(language.getId());
         } else {
-            mTranslateTo.setText("Выберите язык");
+            mTranslateTo.setText(R.string.choose_lang);
         }
 
     }
@@ -250,7 +250,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Bottom
             mTranslateFrom.setText(language.getLang());
             mRootPresenter.setLanguageCodeFrom(language.getId());
         } else {
-            mTranslateFrom.setText("Выберите язык");
+            mTranslateFrom.setText(R.string.choose_lang);
         }
     }
 

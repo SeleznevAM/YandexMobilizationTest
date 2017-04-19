@@ -111,7 +111,7 @@ public class RootPresenter extends Presenter<IRootView> {
             return this;
         }
 
-        public ActionBarBuilder setTitle(CharSequence title){
+        public ActionBarBuilder setTitle(String title){
             this.title = title;
             return this;
         }

@@ -113,8 +113,8 @@ public class HistoryScreen extends AbstractScreen<RootActivity.RootComponent> {
             })).build();
         }
 
-        void deleteFromFavorite(TranslateRealm translateFromPostition) {
-            mModel.deleteTranslateFromFavorite(translateFromPostition);
+        void deleteFromFavorite(TranslateRealm translateFromPosition) {
+            mModel.deleteTranslateFromFavorite(translateFromPosition);
         }
 
         void clearHistory(){
